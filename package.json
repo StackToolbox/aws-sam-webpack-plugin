@@ -1,0 +1,29 @@
+{
+  "name": "sam-webpack-plugin",
+  "version": "0.1.0",
+  "description": "Emulate the SAM CLI build process using Webpack so you can compile code using TypeScript or Babel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buggy/sam-webpack-plugin.git"
+  },
+  "keywords": [
+    "webpack",
+    "aws",
+    "sam",
+    "typescript",
+    "babel"
+  ],
+  "author": "Richard Buggy <rich@goingserverless.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buggy/sam-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/buggy/sam-webpack-plugin#readme",
+  "dependencies": {
+    "yaml-js": "^0.2.3"
+  }
+}
