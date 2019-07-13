@@ -95,9 +95,9 @@ const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
 
 [npm]: https://img.shields.io/npm/v/sam-webpack-plugin.svg
 [npm-url]: https://npmjs.com/package/sam-webpack-plugin
-[node]: https://img.shields.io/node/v/style-loader.svg
+[node]: https://img.shields.io/node/v/sam-webpack-plugin.svg
 [node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack/style-loader.svg
-[deps-url]: https://david-dm.org/webpack/file-loader
-[chat]: https://badges.gitter.im/webpack/webpack.svg
+[deps]: https://david-dm.org/webpack/sam-webpack-plugin.svg
+[deps-url]: https://david-dm.org/webpack/sam-webpack-plugin
+[chat]: https://badges.gitter.im/webpack/sam-webpack-plugin.svg
 [chat-url]: https://gitter.im/webpack/webpack
