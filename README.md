@@ -1,7 +1,6 @@
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
 [![deps][deps]][deps-url]
-[![chat][chat]][chat-url]
 
 <div align="center">
   <a href="https://github.com/webpack/webpack">
@@ -99,5 +98,3 @@ const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
 [node-url]: https://nodejs.org
 [deps]: https://david-dm.org/webpack/sam-webpack-plugin.svg
 [deps-url]: https://david-dm.org/webpack/sam-webpack-plugin
-[chat]: https://badges.gitter.im/webpack/sam-webpack-plugin.svg
-[chat-url]: https://gitter.im/webpack/webpack
