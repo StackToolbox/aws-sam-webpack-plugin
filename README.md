@@ -27,7 +27,7 @@ Note: To use this plugin every function needs to use the `nodejs8.10` or `nodejs
 <h2 align="center">Install</h2>
 
 ```bash
-npm install sam-webpack-plugin --save-dev
+npm install aws-sam-webpack-plugin --save-dev
 ```
 
 <h2 align="center">Usage</h2>
