@@ -1,13 +1,21 @@
-const fs = require("fs");
-const yaml = require("yaml-js");
+import * as fs from "fs";
+import * as yaml from "yaml-js";
+
+interface SamPluginOptions {
+  vscodeDebug: boolean;
+}
 
 class SamPlugin {
-  constructor(options) {
+  private options: SamPluginOptions;
+  private samConfig: any;
+  private launchConfig: any;
+
+  constructor(options: SamPluginOptions) {
     this.options = { vscodeDebug: true, ...options };
   }
 
   // Returns the name of the SAM template file or null if it's not found
-  templateName() {
+  private templateName() {
     for (const f of ["template.yaml", "template.yml"]) {
       if (fs.existsSync(f)) {
         return f;
@@ -18,7 +26,7 @@ class SamPlugin {
   }
 
   // Returns a webpack entry object based on the SAM template
-  entryPoints() {
+  public entry() {
     const templateName = this.templateName();
 
     if (templateName === null) {
@@ -26,29 +34,30 @@ class SamPlugin {
       return null;
     }
 
-    this.cfg = yaml.load(fs.readFileSync(templateName).toString());
-    this.launch = {
+    this.samConfig = yaml.load(fs.readFileSync(templateName).toString());
+    this.launchConfig = {
       version: "0.2.0",
       configurations: []
     };
-    const entry = {};
 
     const defaultRuntime =
-      this.cfg.Globals &&
-      this.cfg.Globals.Function &&
-      this.cfg.Globals.Function.Runtime
-        ? this.cfg.Globals.Function.Runtime
+      this.samConfig.Globals &&
+      this.samConfig.Globals.Function &&
+      this.samConfig.Globals.Function.Runtime
+        ? this.samConfig.Globals.Function.Runtime
         : null;
     const defaultHandler =
-      this.cfg.Globals &&
-      this.cfg.Globals.Function &&
-      this.cfg.Globals.Function.Handler
-        ? this.cfg.Globals.Function.Handler
+      this.samConfig.Globals &&
+      this.samConfig.Globals.Function &&
+      this.samConfig.Globals.Function.Handler
+        ? this.samConfig.Globals.Function.Handler
         : null;
 
+    const entryPoints: { [pname: string]: string } = {};
+
     // Loop through all of the resources
-    for (const resourceKey in this.cfg.Resources) {
-      const resource = this.cfg.Resources[resourceKey];
+    for (const resourceKey in this.samConfig.Resources) {
+      const resource = this.samConfig.Resources[resourceKey];
 
       // Find all of the functions
       if (resource.Type === "AWS::Serverless::Function") {
@@ -84,7 +93,7 @@ class SamPlugin {
         const fileBase = `${basePath}/${handler[0]}`;
         for (const ext of [".ts", ".js"]) {
           if (fs.existsSync(`${fileBase}${ext}`)) {
-            this.launch.configurations.push({
+            this.launchConfig.configurations.push({
               name: resourceKey,
               type: "node",
               request: "attach",
@@ -100,9 +109,11 @@ class SamPlugin {
               sourceMaps: true
             });
 
-            entry[resourceKey] = `${fileBase}${ext}`;
-            this.cfg.Resources[resourceKey].Properties.CodeUri = resourceKey;
-            this.cfg.Resources[resourceKey].Properties.Handler = `app.${
+            entryPoints[resourceKey] = `${fileBase}${ext}`;
+            this.samConfig.Resources[
+              resourceKey
+            ].Properties.CodeUri = resourceKey;
+            this.samConfig.Resources[resourceKey].Properties.Handler = `app.${
               handler[1]
             }`;
           }
@@ -110,18 +121,24 @@ class SamPlugin {
       }
     }
 
-    return entry;
+    return entryPoints;
   }
 
-  apply(compiler) {
-    compiler.hooks.afterEmit.tap("SamPlugin", compilation => {
-      if (this.cfg && this.launch) {
+  public apply(compiler: any) {
+    compiler.hooks.afterEmit.tap("SamPlugin", (compilation: any) => {
+      if (this.samConfig && this.launchConfig) {
         fs.writeFileSync(
           `.aws-sam/build/${this.templateName()}`,
-          yaml.dump(this.cfg)
+          yaml.dump(this.samConfig)
         );
         if (this.options.vscodeDebug) {
-          fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launch));
+          if (!fs.existsSync(".vscode")) {
+            fs.mkdirSync(".vscode");
+          }
+          fs.writeFileSync(
+            ".vscode/launch.json",
+            JSON.stringify(this.launchConfig)
+          );
         }
       } else {
         console.log("It looks like SamPlugin.entryPoints() was not called");

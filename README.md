@@ -43,7 +43,7 @@ const samPlugin = new SamPlugin();
 
 {
   // Loads the entry object from your template.yaml or tempalte.yml
-  entry: samPlugin.entryPoints(),
+  entry: samPlugin.entry(),
 
   // Includes the aws-sdk only for development. The node10.x docker image
   // used by SAM CLI Local doens't include it but it's included in the actual
@@ -63,7 +63,7 @@ You can
 
 |            Name             |         Type         |   Default   | Description                                                                                                                    |
 | :-------------------------: | :------------------: | :---------: | :----------------------------------------------------------------------------------------------------------------------------- |
-|          **`vscodeDebug`**          |     `{Boolean}`      |   `true`    | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local |
+|      **`vscodeDebug`**      |     `{Boolean}`      |   `true`    | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local                                             |
 
 
 ### `vscodeDebug`
