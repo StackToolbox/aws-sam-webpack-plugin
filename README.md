@@ -37,13 +37,13 @@ This plugin looks for `AWS::Serverless::Function` resources in your `template.ya
 **webpack.config.js**
 
 ```js
-const SamPlugin = require("sam-webpack-plugin");
+const AwsSamPlugin = require("aws-sam-webpack-plugin");
 
-const samPlugin = new SamPlugin();
+const awsSamPlugin = new AwsSamPlugin();
 
 {
   // Loads the entry object from your template.yaml or tempalte.yml
-  entry: samPlugin.entry(),
+  entry: awsSamPlugin.entry(),
 
   // Includes the aws-sdk only for development. The node10.x docker image
   // used by SAM CLI Local doens't include it but it's included in the actual
@@ -52,7 +52,7 @@ const samPlugin = new SamPlugin();
 
   // Add the AWS SAM Webpack plugin
   plugins: [
-    samPlugin
+    awsSamPlugin
   ]
 }
 ```
@@ -63,7 +63,7 @@ You can
 
 |            Name             |         Type         |   Default   | Description                                                                                                                    |
 | :-------------------------: | :------------------: | :---------: | :----------------------------------------------------------------------------------------------------------------------------- |
-|      **`vscodeDebug`**      |     `{Boolean}`      |   `true`    | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local                                             |
+|      **`vscodeDebug`**      |     `{Boolean}`      |   `true`    | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local                                            S |
 
 
 ### `vscodeDebug`
@@ -92,9 +92,9 @@ const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
   <tbody>
 </table>
 
-[npm]: https://img.shields.io/npm/v/sam-webpack-plugin.svg
-[npm-url]: https://npmjs.com/package/sam-webpack-plugin
-[node]: https://img.shields.io/node/v/sam-webpack-plugin.svg
+[npm]: https://img.shields.io/npm/v/aws-sam-webpack-plugin.svg
+[npm-url]: https://npmjs.com/package/aws-sam-webpack-plugin
+[node]: https://img.shields.io/node/v/aws-sam-webpack-plugin.svg
 [node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack/sam-webpack-plugin.svg
-[deps-url]: https://david-dm.org/webpack/sam-webpack-plugin
+[deps]: https://david-dm.org/webpack/aws-sam-webpack-plugin.svg
+[deps-url]: https://david-dm.org/webpack/aws-sam-webpack-plugin

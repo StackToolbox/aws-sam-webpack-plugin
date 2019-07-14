@@ -1,16 +1,16 @@
 import * as fs from "fs";
 import * as yaml from "yaml-js";
 
-interface SamPluginOptions {
+interface AwsSamPluginOptions {
   vscodeDebug: boolean;
 }
 
-class SamPlugin {
-  private options: SamPluginOptions;
+class AwsSamPlugin {
+  private options: AwsSamPluginOptions;
   private samConfig: any;
   private launchConfig: any;
 
-  constructor(options: SamPluginOptions) {
+  constructor(options: AwsSamPluginOptions) {
     this.options = { vscodeDebug: true, ...options };
   }
 
@@ -147,4 +147,4 @@ class SamPlugin {
   }
 }
 
-module.exports = SamPlugin;
+module.exports = AwsSamPlugin;
