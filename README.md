@@ -45,6 +45,13 @@ const awsSamPlugin = new AwsSamPlugin();
   // Loads the entry object from your template.yaml or tempalte.yml
   entry: awsSamPlugin.entry(),
 
+  // Write the output to the .aws-sam/build folder
+  output: {
+    filename: "[name]/app.js",
+    libraryTarget: "commonjs2",
+    path: __dirname + "/.aws-sam/build/"
+  },
+
   // Includes the aws-sdk only for development. The node10.x docker image
   // used by SAM CLI Local doens't include it but it's included in the actual
   // Lambda runtime.
