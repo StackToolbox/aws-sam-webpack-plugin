@@ -13,15 +13,14 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) projects using Webpack in way that replaces the `sam build` step. I created this project because I wanted to write my Lambda using TypeScript then use Webpack to build them.
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace of the `sam build` step if every function in your template uses  the `nodejs8.10` or `nodejs10.x` runtime. If your project uses other runtimes then you should look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
 
-To use this plugin:
+The goals for this projects are:
 
-1. Initialize your project using `sam init`
-1. Create a `package.json` in the project root folder using `npm init`
-1. Install Webpack and other `devDependencies` in the project root.
-
-Note: To use this plugin every function needs to use the `nodejs8.10` or `nodejs10.x` runtime. If your project uses other runtimes then you should look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+1. Build your SAM project using Webpack (including support for watch mode)
+1. Support TypeScript and Babel
+1. Compatibility with running `sam build`
+1. Automatically generate VS Code debugging configuration
 
 
 <h2 align="center">Install</h2>
@@ -32,7 +31,8 @@ npm install aws-sam-webpack-plugin --save-dev
 
 <h2 align="center">Usage</h2>
 
-This plugin looks for `AWS::Serverless::Function` resources in your `template.yaml` or `template.yml` then builds each of these as it's own entry point/output.
+Add the plugin to your `webpack.config.js` file. Use the `.entry()` method to load the Webpack entry config by looking for resources with the type  `AWS::Serverless::Function` in your `template.yaml` or `template.yml`.
+
 
 **webpack.config.js**
 
@@ -42,7 +42,8 @@ const AwsSamPlugin = require("aws-sam-webpack-plugin");
 const awsSamPlugin = new AwsSamPlugin();
 
 {
-  // Loads the entry object from your template.yaml or tempalte.yml
+  // Loads the entry object from the AWS::Serverless::Function resources in your
+  // template.yaml or template.yml
   entry: awsSamPlugin.entry(),
 
   // Write the output to the .aws-sam/build folder
@@ -64,7 +65,57 @@ const awsSamPlugin = new AwsSamPlugin();
 }
 ```
 
-You can
+**tsconfig.json**
+
+```json
+{
+    "compilerOptions": {
+      "target": "es2015",
+      "module": "commonjs",
+      "allowJs": true,
+      "checkJs": true,
+      "sourceMap": true,
+      "esModuleInterop": true
+    },
+    "include": ["src/**/*.ts", "src/**/*.js"]
+  }
+```
+
+**package.json**
+
+You will only have one `package.json` for the entire project. You may want to add some of thes entries.
+
+```json
+{
+  "scripts": {
+    "build": "npm run-script clean && NODE_ENV=production webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "watch": "npm run-script clean && NODE_ENV=development webpack-cli -w",
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.28"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.493.0",
+    "source-map-support": "^0.5.12"
+  }
+}
+```
+**src/{function}**
+
+Create a `src` folder with one subdirectory for each function and your handler code inside that folder.
+
+**template.yaml**
+
+Create a `template.yaml` in the project root. Put the functions folder (i.e. `src/{folder}`) as the `CodeUri`. Example:
+
+```yaml
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-function
+      Handler: app.handler
+```
 
 <h2 align="center">Options</h2>
 
