@@ -22,6 +22,7 @@ The goals for this projects are:
 1. Compatibility with running `sam build`
 1. Automatically generate VS Code debugging configuration
 
+**Note:** This plugin does not currently support YAML tag syntax. You need to use `Fn::Sub:` instead of `!Sub`, `Fn::GetAtt:` instead of `!GetAtt`, etc.
 
 <h2 align="center">Install</h2>
 
@@ -53,10 +54,34 @@ const awsSamPlugin = new AwsSamPlugin();
     path: __dirname + "/.aws-sam/build/"
   },
 
+  // Create source maps
+  devtool: "source-map",
+
+  // Resolve .ts and .js extensions
+  resolve: {
+    extensions: [".ts", ".js"]
+  },
+
+  // Target node
+  target: "node",
+
   // Includes the aws-sdk only for development. The node10.x docker image
   // used by SAM CLI Local doens't include it but it's included in the actual
   // Lambda runtime.
-  externals: process.env.NODE_ENV === "development" ? ["aws-sdk"] : [],
+  externals: process.env.NODE_ENV === "development" ? [] : ["aws-sdk"],
+
+  // Set the webpack mode
+  mode: process.env.NODE_ENV || "production",
+
+  // Add the TypeScript loader
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      }
+    ]
+  },
 
   // Add the AWS SAM Webpack plugin
   plugins: [
@@ -103,11 +128,11 @@ You will only have one `package.json` for the entire project. You may want to ad
 ```
 **src/{function}**
 
-Create a `src` folder with one subdirectory for each function and your handler code inside that folder.
+Create a `src` folder with one sub-folder for each function and place your handler code inside that folder.
 
 **template.yaml**
 
-Create a `template.yaml` in the project root. Put the functions folder (i.e. `src/{folder}`) as the `CodeUri`. Example:
+Create a `template.yaml` in the project root with your `webpack.config.js`. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
 ```yaml
   MyFunction:
