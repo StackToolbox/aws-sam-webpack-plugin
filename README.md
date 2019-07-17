@@ -42,7 +42,7 @@ const AwsSamPlugin = require("aws-sam-webpack-plugin");
 
 const awsSamPlugin = new AwsSamPlugin();
 
-{
+module.exports = {
   // Loads the entry object from the AWS::Serverless::Function resources in your
   // template.yaml or template.yml
   entry: awsSamPlugin.entry(),
@@ -113,9 +113,8 @@ You will only have one `package.json` for the entire project. You may want to ad
 ```json
 {
   "scripts": {
-    "build": "npm run-script clean && NODE_ENV=production webpack-cli",
-    "clean": "rimraf .aws-sam .vscode",
-    "watch": "npm run-script clean && NODE_ENV=development webpack-cli -w",
+    "build": "NODE_ENV=production webpack-cli",
+    "watch": "NODE_ENV=development webpack-cli -w",
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.28"
