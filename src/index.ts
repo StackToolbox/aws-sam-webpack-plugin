@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import * as yaml from "yaml-js";
+import { yamlParse, yamlDump } from "yaml-cfn";
 
 interface AwsSamPluginOptions {
   vscodeDebug: boolean;
@@ -34,7 +34,7 @@ class AwsSamPlugin {
       return null;
     }
 
-    this.samConfig = yaml.load(fs.readFileSync(templateName).toString());
+    this.samConfig = yamlParse(fs.readFileSync(templateName).toString());
     this.launchConfig = {
       version: "0.2.0",
       configurations: []
@@ -129,7 +129,7 @@ class AwsSamPlugin {
       if (this.samConfig && this.launchConfig) {
         fs.writeFileSync(
           `.aws-sam/build/${this.templateName()}`,
-          yaml.dump(this.samConfig)
+          yamlDump(this.samConfig)
         );
         if (this.options.vscodeDebug) {
           if (!fs.existsSync(".vscode")) {
