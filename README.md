@@ -1,6 +1,4 @@
 [![npm][npm]][npm-url]
-[![node][node]][node-url]
-[![deps][deps]][deps-url]
 
 <div align="center">
   <a href="https://github.com/webpack/webpack">
@@ -13,7 +11,7 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace of the `sam build` step if every function in your template uses  the `nodejs8.10` or `nodejs10.x` runtime. If your project uses other runtimes then you should look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. It replaces the `sam build` step if every function in your template uses  the `nodejs8.10` or `nodejs10.x` runtime. If your project uses other runtimes then you should look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
 
 The goals for this projects are:
 
@@ -22,20 +20,31 @@ The goals for this projects are:
 1. Compatibility with running `sam build`
 1. Automatically generate VS Code debugging configuration
 
-**Note:** This plugin does not currently support YAML tag syntax. You need to use `Fn::Sub:` instead of `!Sub`, `Fn::GetAtt:` instead of `!GetAtt`, etc.
-
 <h2 align="center">Install</h2>
 
+Create a `package.json` in your projects root folder using `npm init`.
+
+Install the development dependencies:
+
 ```bash
-npm install aws-sam-webpack-plugin --save-dev
+npm install webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda --save-dev
+```
+
+Install the production dependencies:
+
+```bash
+npm install aws-sdk source-map-support --save
 ```
 
 <h2 align="center">Usage</h2>
 
-Add the plugin to your `webpack.config.js` file. Use the `.entry()` method to load the Webpack entry config by looking for resources with the type  `AWS::Serverless::Function` in your `template.yaml` or `template.yml`.
-
-
 **webpack.config.js**
+
+Create `webpack.config.js` file in your projects root folder and add this plugin. Use the `.entry()` method to load the Webpack entry config by looking for resources with the type  `AWS::Serverless::Function` in your `template.yaml` or `template.yml`.
+
+You will want to send the output to `.aws-sam/build`.
+
+Example:
 
 ```js
 const AwsSamPlugin = require("aws-sam-webpack-plugin");
@@ -90,48 +99,55 @@ module.exports = {
 }
 ```
 
+In this example I include the `aws-sdk` in development mode because the `nodejs10.x` docker image used by SAM Local doesn't include it. When deploying to production I make that external and rely on the version provided by Lambda.
+
+
 **tsconfig.json**
+
+Create a TypeScript config file.
+
+Example:
 
 ```json
 {
-    "compilerOptions": {
-      "target": "es2015",
-      "module": "commonjs",
-      "allowJs": true,
-      "checkJs": true,
-      "sourceMap": true,
-      "esModuleInterop": true
-    },
-    "include": ["src/**/*.ts", "src/**/*.js"]
-  }
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": true,
+    "sourceMap": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"]
+}
 ```
 
 **package.json**
 
-You will only have one `package.json` for the entire project. You may want to add some of thes entries.
+In the `package.json` I like to add two (optional) scripts to build the project and start watch mode. You can execute these commands from the command line.
 
 ```json
 {
   "scripts": {
-    "build": "NODE_ENV=production webpack-cli",
-    "watch": "NODE_ENV=development webpack-cli -w",
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "^8.10.28"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.493.0",
-    "source-map-support": "^0.5.12"
+    "build": "webpack-cli",
+    "watch": "webpack-cli -w",
   }
 }
 ```
+
+You can set the `NODE_ENV` environment variable while executing the commands to change how it's built:
+
+```bash
+NODE_ENV=development npm run-script build
+```
+
 **src/{function}**
 
-Create a `src` folder with one sub-folder for each function and place your handler code inside that folder.
+Create a `src` folder with one sub-folder for each function and place your handler and any test code in here.
 
 **template.yaml**
 
-Create a `template.yaml` in the project root with your `webpack.config.js`. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
+Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
 ```yaml
   MyFunction:
@@ -152,11 +168,6 @@ Create a `template.yaml` in the project root with your `webpack.config.js`. For 
 
 Enable/disable automatically generating a `.vscode/launch.json` file. This file contains the VS Code debug configuration for all of the Lambda's from your `template.yaml`.
 
-**webpack.config.js**
-
-```js
-const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
-```
 
 <h2 align="center">Maintainers</h2>
 
@@ -176,7 +187,3 @@ const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
 
 [npm]: https://img.shields.io/npm/v/aws-sam-webpack-plugin.svg
 [npm-url]: https://npmjs.com/package/aws-sam-webpack-plugin
-[node]: https://img.shields.io/node/v/aws-sam-webpack-plugin.svg
-[node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack/aws-sam-webpack-plugin.svg
-[deps-url]: https://david-dm.org/webpack/aws-sam-webpack-plugin
