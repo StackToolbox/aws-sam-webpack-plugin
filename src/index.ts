@@ -52,6 +52,12 @@ class AwsSamPlugin {
       this.samConfig.Globals.Function.Handler
         ? this.samConfig.Globals.Function.Handler
         : null;
+    const defaultCodeUri =
+        this.samConfig.Globals &&
+        this.samConfig.Globals.Function &&
+        this.samConfig.Globals.Function.CodeUri
+          ? this.samConfig.Globals.Function.CodeUri
+          : null;    
 
     const entryPoints: { [pname: string]: string } = {};
 
@@ -84,12 +90,13 @@ class AwsSamPlugin {
             `${resourceKey} Handler must contain exactly one "."`
           );
         }
-
-        if (!properties.CodeUri) {
+        
+        if (!properties.CodeUri || defaultCodeUri) {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
+        const codeUri = (properties.CodeUri || defaultCodeUri);
 
-        const basePath = properties.CodeUri ? `./${properties.CodeUri}` : ".";
+        const basePath = codeUri ? `./${codeUri}` : ".";
         const fileBase = `${basePath}/${handler[0]}`;
         for (const ext of [".ts", ".js"]) {
           if (fs.existsSync(`${fileBase}${ext}`)) {
