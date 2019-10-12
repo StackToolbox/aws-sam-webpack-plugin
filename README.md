@@ -157,6 +157,69 @@ Create a `template.yaml` in the project root. For the `CodeUri` use the function
       Handler: app.handler
 ```
 
+<h2 align="center">Usage with Babel</h2>
+
+Install the following additional dependencies
+
+```bash
+npm install --save-dev \
+    @babel/cli \
+    @babel/core \
+    @babel/plugin-proposal-class-properties \
+    @babel/preset-env \
+    @babel/preset-typescript \
+    babel-loader
+```
+
+Create the following `babel.config.js` file at the project root
+
+```javascript
+module.exports = {
+    "plugins": [
+        "@babel/proposal-class-properties",
+    ],
+    "presets": [
+        "@babel/env",
+        "@babel/typescript",
+    ]
+}
+```
+
+Then modify your webpack configuration to use `babel-loader` instead of `ts-loader`.
+
+```javascript
+const AwsSamPlugin = require("aws-sam-webpack-plugin");
+const awsSamPlugin = new AwsSamPlugin();
+
+module.exports = {
+  entry: awsSamPlugin.entry(),
+  output: {
+    filename: "[name]/app.js",
+    libraryTarget: "commonjs2",
+    path: __dirname + "/.aws-sam/build/"
+  },
+  devtool: "source-map",
+  resolve: {
+    extensions: [".ts", ".js"]
+  },
+  target: "node",
+  externals: process.env.NODE_ENV === "development" ? [] : ["aws-sdk"],
+  mode: process.env.NODE_ENV || "production",
+  // use babel-loader instead of ts-loader
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "babel-loader"
+      }
+    ]
+  },
+  plugins: [
+    awsSamPlugin
+  ]
+}
+```
+
 <h2 align="center">Options</h2>
 
 |            Name             |         Type         |   Default   | Description                                                                                                                    |
