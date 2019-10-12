@@ -36,7 +36,7 @@ Install the production dependencies:
 npm install aws-sdk source-map-support --save
 ```
 
-<h2 align="center">Usage</h2>
+<h2 align="center">Usage with TypeScript</h2>
 
 **webpack.config.js**
 
