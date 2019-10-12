@@ -71,7 +71,7 @@ class AwsSamPlugin {
         if (!properties) {
           throw new Error(`${resourceKey} is missing Properties`);
         }
-
+        // Check the runtime is supported
         if (
           !["nodejs8.10", "nodejs10.x"].includes(
             properties.Runtime || defaultRuntime
@@ -81,6 +81,14 @@ class AwsSamPlugin {
             `${resourceKey} has an unsupport Runtime. Must be nodejs8.10 or nodejs10.x`
           );
         }
+
+        // Continue with a warning if they're using inline code
+        if (properties.InlineCode) {
+          console.log(`WARNING: This plugin does not compile inline code. The InlineCode for '${resourceKey}' will be copied 'as is'.`);
+          continue;
+        }
+
+        // Check we have a valid handler
         if (!properties.Handler || defaultHandler) {
           throw new Error(`${resourceKey} is missing a Handler`);
         }
@@ -90,7 +98,8 @@ class AwsSamPlugin {
             `${resourceKey} Handler must contain exactly one "."`
           );
         }
-        
+
+        // Check we have a CodeUri
         if (!properties.CodeUri || defaultCodeUri) {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
@@ -100,6 +109,7 @@ class AwsSamPlugin {
         const fileBase = `${basePath}/${handler[0]}`;
         for (const ext of [".ts", ".js"]) {
           if (fs.existsSync(`${fileBase}${ext}`)) {
+            // Generate the launch config for the VS Code debugger
             this.launchConfig.configurations.push({
               name: resourceKey,
               type: "node",
@@ -116,6 +126,7 @@ class AwsSamPlugin {
               sourceMaps: true
             });
 
+            // Add the entry point for webpack
             entryPoints[resourceKey] = `${fileBase}${ext}`;
             this.samConfig.Resources[
               resourceKey
