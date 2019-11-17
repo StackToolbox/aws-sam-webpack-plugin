@@ -89,7 +89,7 @@ class AwsSamPlugin {
         }
 
         // Check we have a valid handler
-        if (!properties.Handler || defaultHandler) {
+        if (!properties.Handler && !defaultHandler) {
           throw new Error(`${resourceKey} is missing a Handler`);
         }
         const handler = (properties.Handler || defaultHandler).split(".");
