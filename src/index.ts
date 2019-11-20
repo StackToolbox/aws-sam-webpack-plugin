@@ -40,24 +40,9 @@ class AwsSamPlugin {
       configurations: []
     };
 
-    const defaultRuntime =
-      this.samConfig.Globals &&
-      this.samConfig.Globals.Function &&
-      this.samConfig.Globals.Function.Runtime
-        ? this.samConfig.Globals.Function.Runtime
-        : null;
-    const defaultHandler =
-      this.samConfig.Globals &&
-      this.samConfig.Globals.Function &&
-      this.samConfig.Globals.Function.Handler
-        ? this.samConfig.Globals.Function.Handler
-        : null;
-    const defaultCodeUri =
-        this.samConfig.Globals &&
-        this.samConfig.Globals.Function &&
-        this.samConfig.Globals.Function.CodeUri
-          ? this.samConfig.Globals.Function.CodeUri
-          : null;    
+    const defaultRuntime = this.samConfig.Globals?.Function?.Runtime ?? null;
+    const defaultHandler = this.samConfig.Globals?.Function?.Handler ?? null;
+    const defaultCodeUri = this.samConfig.Globals?.Function?.CodeUri ?? null;
 
     const entryPoints: { [pname: string]: string } = {};
 
@@ -74,7 +59,7 @@ class AwsSamPlugin {
         // Check the runtime is supported
         if (
           !["nodejs8.10", "nodejs10.x"].includes(
-            properties.Runtime || defaultRuntime
+            properties.Runtime ?? defaultRuntime
           )
         ) {
           throw new Error(
@@ -89,24 +74,25 @@ class AwsSamPlugin {
         }
 
         // Check we have a valid handler
-        if (!properties.Handler || defaultHandler) {
+        const handler = properties.Handler ?? defaultHandler;
+        if (!handler) {
           throw new Error(`${resourceKey} is missing a Handler`);
         }
-        const handler = (properties.Handler || defaultHandler).split(".");
-        if (handler.length !== 2) {
+        const handlerComponents = handler.split(".");
+        if (handlerComponents.length !== 2) {
           throw new Error(
             `${resourceKey} Handler must contain exactly one "."`
           );
         }
 
         // Check we have a CodeUri
-        if (!properties.CodeUri || defaultCodeUri) {
+        const codeUri = properties.CodeUri ?? defaultCodeUri;
+        if (!codeUri) {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
-        const codeUri = (properties.CodeUri || defaultCodeUri);
 
         const basePath = codeUri ? `./${codeUri}` : ".";
-        const fileBase = `${basePath}/${handler[0]}`;
+        const fileBase = `${basePath}/${handlerComponents[0]}`;
         for (const ext of [".ts", ".js"]) {
           if (fs.existsSync(`${fileBase}${ext}`)) {
             // Generate the launch config for the VS Code debugger
@@ -132,7 +118,7 @@ class AwsSamPlugin {
               resourceKey
             ].Properties.CodeUri = resourceKey;
             this.samConfig.Resources[resourceKey].Properties.Handler = `app.${
-              handler[1]
+              handlerComponents[1]
             }`;
           }
         }
