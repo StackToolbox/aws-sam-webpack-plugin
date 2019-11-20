@@ -58,7 +58,7 @@ class AwsSamPlugin {
         }
         // Check the runtime is supported
         if (
-          !["nodejs8.10", "nodejs10.x"].includes(
+          !["nodejs8.10", "nodejs10.x", "nodejs12.x"].includes(
             properties.Runtime ?? defaultRuntime
           )
         ) {
