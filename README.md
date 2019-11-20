@@ -229,7 +229,7 @@ module.exports = {
 
 ### `vscodeDebug`
 
-Enable/disable automatically generating a `.vscode/launch.json` file. This file contains the VS Code debug configuration for all of the Lambda's from your `template.yaml`.
+Enable/disable automatically generating a `.vscode/launch.json` file. This file contains the VS Code debug configuration for all of the Lambdas from your `template.yaml`.
 
 
 <h2 align="center">Maintainers</h2>
