@@ -145,7 +145,7 @@ class AwsSamPlugin {
           );
         }
       } else {
-        console.log("It looks like SamPlugin.entryPoints() was not called");
+        console.log("It looks like SamPlugin.entry() was not called");
       }
     });
   }
