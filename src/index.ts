@@ -1,24 +1,37 @@
 import * as fs from "fs";
+import * as path from "path";
 import { yamlParse, yamlDump } from "yaml-cfn";
 
 interface AwsSamPluginOptions {
   vscodeDebug: boolean;
+  templatePath: string | undefined;
 }
 
 class AwsSamPlugin {
   private options: AwsSamPluginOptions;
   private samConfig: any;
   private launchConfig: any;
+  private templatePath: string = '';
 
   constructor(options: AwsSamPluginOptions) {
-    this.options = { vscodeDebug: true, ...options };
+    this.options = {
+      vscodeDebug: true,
+      templatePath: undefined,
+      ...options,
+    };
   }
 
   // Returns the name of the SAM template file or null if it's not found
-  private templateName() {
-    for (const f of ["template.yaml", "template.yml"]) {
-      if (fs.existsSync(f)) {
-        return f;
+  private findTemplate() {
+    if (this.options.templatePath) {
+      if (fs.existsSync(this.options.templatePath)) {
+        return this.options.templatePath
+      }
+    } else {
+      for (const f of ["template.yaml", "template.yml"]) {
+        if (fs.existsSync(f)) {
+          return f;
+        }
       }
     }
 
@@ -27,14 +40,16 @@ class AwsSamPlugin {
 
   // Returns a webpack entry object based on the SAM template
   public entry() {
-    const templateName = this.templateName();
+    const templatePath = this.findTemplate();
 
-    if (templateName === null) {
+    if (templatePath === null) {
       console.log("No SAM template found");
       return null;
     }
 
-    this.samConfig = yamlParse(fs.readFileSync(templateName).toString());
+    this.templatePath = templatePath;
+
+    this.samConfig = yamlParse(fs.readFileSync(this.templatePath).toString());
     this.launchConfig = {
       version: "0.2.0",
       configurations: []
@@ -132,7 +147,7 @@ class AwsSamPlugin {
     compiler.hooks.afterEmit.tap("SamPlugin", (compilation: any) => {
       if (this.samConfig && this.launchConfig) {
         fs.writeFileSync(
-          `.aws-sam/build/${this.templateName()}`,
+          `.aws-sam/build/${path.basename(this.templatePath)}`,
           yamlDump(this.samConfig)
         );
         if (this.options.vscodeDebug) {
