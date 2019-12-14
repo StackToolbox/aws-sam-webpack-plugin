@@ -93,35 +93,32 @@ class AwsSamPlugin {
 
         const basePath = codeUri ? `./${codeUri}` : ".";
         const fileBase = `${basePath}/${handlerComponents[0]}`;
-        for (const ext of [".ts", ".js"]) {
-          if (fs.existsSync(`${fileBase}${ext}`)) {
-            // Generate the launch config for the VS Code debugger
-            this.launchConfig.configurations.push({
-              name: resourceKey,
-              type: "node",
-              request: "attach",
-              address: "localhost",
-              port: 5858,
-              localRoot: `\${workspaceRoot}/.aws-sam/build/${resourceKey}`,
-              remoteRoot: "/var/task",
-              protocol: "inspector",
-              stopOnEntry: false,
-              outFiles: [
-                `\${workspaceRoot}/.aws-sam/build/${resourceKey}/app.js`
-              ],
-              sourceMaps: true
-            });
 
-            // Add the entry point for webpack
-            entryPoints[resourceKey] = `${fileBase}${ext}`;
-            this.samConfig.Resources[
-              resourceKey
-            ].Properties.CodeUri = resourceKey;
-            this.samConfig.Resources[resourceKey].Properties.Handler = `app.${
-              handlerComponents[1]
-            }`;
-          }
-        }
+        // Generate the launch config for the VS Code debugger
+        this.launchConfig.configurations.push({
+          name: resourceKey,
+          type: "node",
+          request: "attach",
+          address: "localhost",
+          port: 5858,
+          localRoot: `\${workspaceRoot}/.aws-sam/build/${resourceKey}`,
+          remoteRoot: "/var/task",
+          protocol: "inspector",
+          stopOnEntry: false,
+          outFiles: [
+            `\${workspaceRoot}/.aws-sam/build/${resourceKey}/app.js`
+          ],
+          sourceMaps: true
+        });
+
+        // Add the entry point for webpack
+        entryPoints[resourceKey] = fileBase;
+        this.samConfig.Resources[
+          resourceKey
+        ].Properties.CodeUri = resourceKey;
+        this.samConfig.Resources[resourceKey].Properties.Handler = `app.${
+          handlerComponents[1]
+        }`;
       }
     }
 
