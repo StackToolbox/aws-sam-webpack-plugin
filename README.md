@@ -11,7 +11,7 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses  the `nodejs8.10`, `nodejs10.x` or `nodejs12.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs8.10`, `nodejs10.x` or `nodejs12.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
 
 I started this project for two reasons:
 
@@ -91,7 +91,6 @@ module.exports = {
   // Target node
   target: "node",
 
-
   // AWS recommends always including the aws-sdk in your Lambda package but excluding can significantly reduce
   // the size of your deployment package. If you want to always include it then comment out this line. It has
   // been included conditionally because the node10.x docker image used by SAM local doesn't include it.
@@ -102,16 +101,12 @@ module.exports = {
 
   // Add the TypeScript loader
   module: {
-    rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" }
-    ]
+    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }]
   },
 
   // Add the AWS SAM Webpack plugin
-  plugins: [
-    awsSamPlugin
-  ]
-}
+  plugins: [awsSamPlugin]
+};
 ```
 
 <h3 align="center">tsconfig.json</h3>
@@ -145,7 +140,7 @@ To make building simple I like to add some scripts to the `package.json` which h
     "clean": "rimraf .aws-sam .vscode",
     "prebuild": "rimraf .aws-sam .vscode",
     "prewatch": "rimraf .aws-sam .vscode",
-    "watch": "webpack-cli -w",
+    "watch": "webpack-cli -w"
   }
 }
 ```
@@ -165,11 +160,11 @@ Create a `src` folder with one sub-folder for each function. Place your handler 
 Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
 ```yaml
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/my-function
-      Handler: app.handler
+MyFunction:
+  Type: AWS::Serverless::Function
+  Properties:
+    CodeUri: src/my-function
+    Handler: app.handler
 ```
 
 <h2 align="center">Usage with Babel</h2>
@@ -255,10 +250,8 @@ module.exports = {
   },
 
   // Add the AWS SAM Webpack plugin
-  plugins: [
-    awsSamPlugin
-  ]
-}
+  plugins: [awsSamPlugin]
+};
 ```
 
 <h3 align="center">babel.config.js</h3>
@@ -267,14 +260,9 @@ Create a `babel.config.js` file at the project root
 
 ```javascript
 module.exports = {
-    "plugins": [
-        "@babel/proposal-class-properties",
-    ],
-    "presets": [
-        "@babel/env",
-        "@babel/typescript",
-    ]
-}
+  plugins: ["@babel/proposal-class-properties"],
+  presets: ["@babel/env", "@babel/typescript"]
+};
 ```
 
 <h3 align="center">package.json (optional)</h3>
@@ -288,7 +276,7 @@ To make building simple I like to add some scripts to the `package.json` which h
     "clean": "rimraf .aws-sam .vscode",
     "prebuild": "rimraf .aws-sam .vscode",
     "prewatch": "rimraf .aws-sam .vscode",
-    "watch": "webpack-cli -w",
+    "watch": "webpack-cli -w"
   }
 }
 ```
@@ -308,24 +296,57 @@ Create a `src` folder with one sub-folder for each function. Place your handler 
 Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
 ```yaml
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/my-function
-      Handler: app.handler
+MyFunction:
+  Type: AWS::Serverless::Function
+  Properties:
+    CodeUri: src/my-function
+    Handler: app.handler
 ```
+
+<h2 align="center">Building Multiple Projects (Experimental)</h2>
+
+From v0.5.0 you can build multiple SAM projects from a single `webpack.config.js` by using the `projects` option. All of the SAM projects need to be located below a common point on the filesystem. This could be the same folder that contains your `webpack.config.js` or another folder like `services` (any name is ok).
+
+The `projects` option accepts a JavaScript object where the key is a shortname for the project and the value can be:
+
+1. The path to the root folder for your SAM project. The plugin will look for a `template.yaml` or `template.yml` in that folder.
+1. The path to a SAM template. This allows you to use a different a template name. The folder the template is located in will be used as the root folder for that SAM project.
+
+For example: The following will build two projects, `projectA` and `projectB`. For `projectA` the plugin will look for either `template.yaml` or `template.yml` in the folder `./services/project-a` but for `projectB` it will only use `project.yaml` in the `./services/project-b` folder.
+
+```javascript
+const awsSamPlugin = new AwsSamPlugin({
+  projects: {
+    projectA: "./services/project-a",
+    projectB: "./services/project-b/project.yaml"
+  }
+});
+```
+
+You also need to modify the `output` section of your `webpack.config.js` so that Webpack uses the plugins `.filename()` method to determine the name of the output file. This will create a `.aws-sam/build` folder in correct SAM project root.
+
+```javascript
+module.exports = {
+  output: {
+    filename: chunkData => awsSamPlugin.filename(chunkData),
+    libraryTarget: "commonjs2",
+    path: path.resolve(".")
+  }
+};
+```
+
+Once you have done this you should be able to execute Webpack from the root folder for your project (typically where you have your `package.json`, `webpack.config.js`, etc). In this example that folder would also contain the `services` folder.
 
 <h2 align="center">Options</h2>
 
-|            Name             |         Type         |   Default   | Description                                                                                                                    |
-| :-------------------------: | :------------------: | :---------: | :----------------------------------------------------------------------------------------------------------------------------- |
-|      **`vscodeDebug`**      |     `{Boolean}`      |   `true`    | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local                                            S |
-
+| Name              | Type        | Default           | Description                                                                                                                                                                           |
+| :---------------- | :---------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`projects`**    | `{Object}`  | `{"default":"."}` | A JavaScript object where the key is the name of the project and the value is the path to the SAM template or a folder containing a `template.yaml` or `template.yml` for the project |
+| **`vscodeDebug`** | `{Boolean}` | `true`            | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local S                                                                                                  |
 
 ### `vscodeDebug`
 
 Enable/disable automatically generating a `.vscode/launch.json` file. This file contains the VS Code debug configuration for all of the Lambdas from your `template.yaml`.
-
 
 <h2 align="center">Maintainers</h2>
 
