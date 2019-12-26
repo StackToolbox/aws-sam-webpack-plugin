@@ -11,7 +11,12 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. It replaces the `sam build` step if every function in your template uses  the `nodejs8.10` or `nodejs10.x` runtime. If your project uses other runtimes then you should look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses  the `nodejs8.10`, `nodejs10.x` or `nodejs12.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+
+I started this project for two reasons:
+
+1. SAM doesn't have good support for TypeScript
+1. SAM build is slow because it runs `npm pack` and `npm install` for every function in your project.
 
 The goals for this projects are:
 
@@ -20,14 +25,22 @@ The goals for this projects are:
 1. Compatibility with running `sam build`
 1. Automatically generate VS Code debugging configuration
 
-<h2 align="center">Install</h2>
+<h2 align="center">Usage with TypeScript</h2>
 
-Create a `package.json` in your projects root folder using `npm init`.
+<h3 align="center">Installation</h3>
+
+Create a `package.json` in your projects root folder using `npm init` or `yarn init`.
 
 Install the development dependencies:
 
 ```bash
 npm install webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda --save-dev
+```
+
+or
+
+```bash
+yarn add webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda -D
 ```
 
 Install the production dependencies:
@@ -36,13 +49,17 @@ Install the production dependencies:
 npm install aws-sdk source-map-support --save
 ```
 
-<h2 align="center">Usage with TypeScript</h2>
+or
 
-**webpack.config.js**
+```bash
+yarn add aws-sdk source-map-support --save
+```
 
-Create `webpack.config.js` file in your projects root folder and add this plugin. Use the `.entry()` method to load the Webpack entry config by looking for resources with the type  `AWS::Serverless::Function` in your `template.yaml` or `template.yml`.
+<h3 align="center">webpack.config.js</h3>
 
-You will want to send the output to `.aws-sam/build`.
+Create a `webpack.config.js` file in your projects root folder and add this plugin. The `entry` points can be set automatically using the `.entry()` method from this plugin. The output should go to `.aws-sam/build`.
+
+**Tip:** If you set `entry` to `() => awsSamPlugin.entry()` it will reload your SAM configuration every time webpack rebuilds. You can disable this by setting `entry` to `awsSamPlugin.entry()`
 
 Example:
 
@@ -53,8 +70,8 @@ const awsSamPlugin = new AwsSamPlugin();
 
 module.exports = {
   // Loads the entry object from the AWS::Serverless::Function resources in your
-  // template.yaml or template.yml
-  entry: awsSamPlugin.entry(),
+  // SAM config. Setting this to a function will
+  entry: () => awsSamPlugin.entry(),
 
   // Write the output to the .aws-sam/build folder
   output: {
@@ -74,9 +91,10 @@ module.exports = {
   // Target node
   target: "node",
 
-  // Includes the aws-sdk only for development. The node10.x docker image
-  // used by SAM CLI Local doens't include it but it's included in the actual
-  // Lambda runtime.
+
+  // AWS recommends always including the aws-sdk in your Lambda package but excluding can significantly reduce
+  // the size of your deployment package. If you want to always include it then comment out this line. It has
+  // been included conditionally because the node10.x docker image used by SAM local doesn't include it.
   externals: process.env.NODE_ENV === "development" ? [] : ["aws-sdk"],
 
   // Set the webpack mode
@@ -85,10 +103,7 @@ module.exports = {
   // Add the TypeScript loader
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader"
-      }
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   },
 
@@ -99,12 +114,9 @@ module.exports = {
 }
 ```
 
-In this example I include the `aws-sdk` in development mode because the `nodejs10.x` docker image used by SAM Local doesn't include it. When deploying to production I make that external and rely on the version provided by Lambda.
+<h3 align="center">tsconfig.json</h3>
 
-
-**tsconfig.json**
-
-Create a TypeScript config file.
+Create a TypeScript config file that compiles `.ts` and `.js` files from the `src` folder.
 
 Example:
 
@@ -122,30 +134,33 @@ Example:
 }
 ```
 
-**package.json**
+<h3 align="center">package.json (optional)</h3>
 
-In the `package.json` I like to add two (optional) scripts to build the project and start watch mode. You can execute these commands from the command line.
+To make building simple I like to add some scripts to the `package.json` which handles building, building in watch mode and cleaning up.
 
 ```json
 {
   "scripts": {
     "build": "webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "prebuild": "rimraf .aws-sam .vscode",
+    "prewatch": "rimraf .aws-sam .vscode",
     "watch": "webpack-cli -w",
   }
 }
 ```
 
-You can set the `NODE_ENV` environment variable while executing the commands to change how it's built:
+You can set the `NODE_ENV` environment variable while executing the scripts to change how it's built:
 
 ```bash
 NODE_ENV=development npm run-script build
 ```
 
-**src/{function}**
+<h3 align="center">src/{function}</h3>
 
-Create a `src` folder with one sub-folder for each function and place your handler and any test code in here.
+Create a `src` folder with one sub-folder for each function. Place your handler and any test code in here.
 
-**template.yaml**
+<h3 align="center">template.yaml</h3>
 
 Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
@@ -159,19 +174,96 @@ Create a `template.yaml` in the project root. For the `CodeUri` use the function
 
 <h2 align="center">Usage with Babel</h2>
 
-Install the following additional dependencies
+<h3 align="center">Installation</h3>
+
+Create a `package.json` in your projects root folder using `npm init` or `yarn init`.
+
+Install the development dependencies:
 
 ```bash
-npm install --save-dev \
-    @babel/cli \
-    @babel/core \
-    @babel/plugin-proposal-class-properties \
-    @babel/preset-env \
-    @babel/preset-typescript \
-    babel-loader
+npm installl webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babe/preset-typescript babel-loader --save-dev
 ```
 
-Create the following `babel.config.js` file at the project root
+or
+
+```bash
+yarn add webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babe/preset-typescript babel-loader -D
+```
+
+Install the production dependencies:
+
+```bash
+npm install aws-sdk source-map-support --save
+```
+
+or
+
+```bash
+yarn add aws-sdk source-map-support --save
+```
+
+<h3 align="center">webpack.config.js</h3>
+
+Create a `webpack.config.js` file in your projects root folder and add this plugin. The `entry` points can be set automatically using the `.entry()` method from this plugin. The output should go to `.aws-sam/build`.
+
+**Tip:** If you set `entry` to `() => awsSamPlugin.entry()` it will reload your SAM configuration every time webpack rebuilds. You can disable this by setting `entry` to `awsSamPlugin.entry()`
+
+Example:
+
+```js
+const AwsSamPlugin = require("aws-sam-webpack-plugin");
+
+const awsSamPlugin = new AwsSamPlugin();
+
+module.exports = {
+  // Loads the entry object from the AWS::Serverless::Function resources in your
+  // SAM config. Setting this to a function will
+  entry: () => awsSamPlugin.entry(),
+
+  // Write the output to the .aws-sam/build folder
+  output: {
+    filename: "[name]/app.js",
+    libraryTarget: "commonjs2",
+    path: __dirname + "/.aws-sam/build/"
+  },
+
+  // Create source maps
+  devtool: "source-map",
+
+  // Resolve .ts and .js extensions
+  resolve: {
+    extensions: [".ts", ".js"]
+  },
+
+  // Target node
+  target: "node",
+
+  // AWS recommends always including the aws-sdk in your Lambda package but excluding can significantly reduce
+  // the size of your deployment package. If you want to always include it then comment out this line. It has
+  // been included conditionally because the node10.x docker image used by SAM local doesn't include it.
+  externals: process.env.NODE_ENV === "development" ? [] : ["aws-sdk"],
+
+  // Set the webpack mode
+  mode: process.env.NODE_ENV || "production",
+
+  // Add the TypeScript loader
+  module: {
+    rules: [
+      { test: /\.jsx?$/, loader: "babel-loader" },
+      { test: /\.tsx?$/, loader: "babel-loader" }
+    ]
+  },
+
+  // Add the AWS SAM Webpack plugin
+  plugins: [
+    awsSamPlugin
+  ]
+}
+```
+
+<h3 align="center">babel.config.js</h3>
+
+Create a `babel.config.js` file at the project root
 
 ```javascript
 module.exports = {
@@ -185,39 +277,42 @@ module.exports = {
 }
 ```
 
-Then modify your webpack configuration to use `babel-loader` instead of `ts-loader`.
+<h3 align="center">package.json (optional)</h3>
 
-```javascript
-const AwsSamPlugin = require("aws-sam-webpack-plugin");
-const awsSamPlugin = new AwsSamPlugin();
+To make building simple I like to add some scripts to the `package.json` which handle building, building in watch mode and cleaning up.
 
-module.exports = {
-  entry: awsSamPlugin.entry(),
-  output: {
-    filename: "[name]/app.js",
-    libraryTarget: "commonjs2",
-    path: __dirname + "/.aws-sam/build/"
-  },
-  devtool: "source-map",
-  resolve: {
-    extensions: [".ts", ".js"]
-  },
-  target: "node",
-  externals: process.env.NODE_ENV === "development" ? [] : ["aws-sdk"],
-  mode: process.env.NODE_ENV || "production",
-  // use babel-loader instead of ts-loader
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "babel-loader"
-      }
-    ]
-  },
-  plugins: [
-    awsSamPlugin
-  ]
+```json
+{
+  "scripts": {
+    "build": "webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "prebuild": "rimraf .aws-sam .vscode",
+    "prewatch": "rimraf .aws-sam .vscode",
+    "watch": "webpack-cli -w",
+  }
 }
+```
+
+You can set the `NODE_ENV` environment variable while executing the commands to change how it's built:
+
+```bash
+NODE_ENV=development npm run-script build
+```
+
+<h3 align="center">src/{function}</h3>
+
+Create a `src` folder with one sub-folder for each function. Place your handler and any test code in here.
+
+<h3 align="center">template.yaml</h3>
+
+Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
+
+```yaml
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-function
+      Handler: app.handler
 ```
 
 <h2 align="center">Options</h2>
