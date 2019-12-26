@@ -27,11 +27,11 @@
   "homepage": "https://github.com/buggy/sam-webpack-plugin#readme",
   "dependencies": {
     "js-yaml": "^3.13.1",
-    "yaml-cfn": "^0.2.2"
+    "yaml-cfn": "^0.2.3"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.1",
-    "@types/node": "^12.6.2",
-    "typescript": "^3.7.2"
+    "@types/node": "^12.12.22",
+    "typescript": "^3.7.4"
   }
 }
