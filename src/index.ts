@@ -63,7 +63,7 @@ class AwsSamPlugin {
           )
         ) {
           throw new Error(
-            `${resourceKey} has an unsupport Runtime. Must be nodejs8.10 or nodejs10.x`
+            `${resourceKey} has an unsupport Runtime. Must be nodejs8.10, nodejs10.x or nodejs12.x`
           );
         }
 
