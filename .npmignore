@@ -1,3 +1,4 @@
 .gitignore
+prettier.config.js
 src
 tsconfig.json
