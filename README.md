@@ -328,7 +328,7 @@ You also need to modify the `output` section of your `webpack.config.js` so that
 ```javascript
 module.exports = {
   output: {
-    filename: chunkData => awsSamPlugin.filename(chunkData),
+    filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
     path: path.resolve(".")
   }

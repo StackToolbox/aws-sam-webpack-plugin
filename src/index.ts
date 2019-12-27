@@ -110,7 +110,7 @@ class AwsSamPlugin {
         });
 
         // Add the entry point for webpack
-        const entryPointName = `${projectKey}#${resourceKey}`;
+        const entryPointName = projectKey === "default" ? resourceKey : `${projectKey}#${resourceKey}`;
         this.entryPoints[entryPointName] = fileBase;
         samConfig.Resources[resourceKey].Properties.CodeUri = resourceKey;
         samConfig.Resources[resourceKey].Properties.Handler = `app.${handlerComponents[1]}`;
