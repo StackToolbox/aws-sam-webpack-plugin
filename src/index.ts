@@ -11,6 +11,11 @@ interface AwsSamPluginOptions {
   vscodeDebug: boolean;
 }
 
+interface AwsSamPluginArgs {
+    options: Partial<AwsSamPluginOptions>
+    env: {[key:string]: string}
+}
+
 interface IEntryPointMap {
   [pname: string]: string;
 }
@@ -21,8 +26,13 @@ class AwsSamPlugin {
   private launchConfig: any;
   private options: AwsSamPluginOptions;
   private samConfigs: Array<{ buildRoot: string; entryPointName: string; outFile: string; projectKey: string; samConfig: any }>;
+  private targetFunction?: string;
 
-  constructor(options: Partial<AwsSamPluginOptions>) {
+  constructor( {options, env = {}} : AwsSamPluginArgs = {
+                                                            options: {},
+                                                            env: {}
+                                                        }
+              ) {
     this.entryPoints = {};
     this.options = {
       projects: { default: "." },
@@ -30,6 +40,7 @@ class AwsSamPlugin {
       ...options
     };
     this.samConfigs = [];
+    this.targetFunction = env.func || undefined
   }
 
   // Returns the name of the SAM template file or null if it's not found
@@ -54,6 +65,10 @@ class AwsSamPlugin {
 
     // Loop through all of the resources
     for (const resourceKey in samConfig.Resources) {
+        if(this.targetFunction !== undefined && resourceKey !== this.targetFunction){
+            continue;
+        }
+
       const resource = samConfig.Resources[resourceKey];
 
       // Find all of the functions
