@@ -171,4 +171,4 @@ class AwsSamPlugin {
   }
 }
 
-module.exports = AwsSamPlugin;
+export = AwsSamPlugin
