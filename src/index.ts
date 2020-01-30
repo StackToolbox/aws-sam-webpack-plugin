@@ -153,7 +153,7 @@ class AwsSamPlugin {
   }
 
   public apply(compiler: any) {
-    compiler.hooks.afterEmit.tap("SamPlugin", (compilation: any) => {
+    compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
           fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
@@ -172,3 +172,4 @@ class AwsSamPlugin {
 }
 
 module.exports = AwsSamPlugin;
+export default AwsSamPlugin;
