@@ -75,9 +75,9 @@ module.exports = {
 
   // Write the output to the .aws-sam/build folder
   output: {
-    filename: "[name]/app.js",
+    filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: __dirname + "/.aws-sam/build/"
+    path: path.resolve(".")
   },
 
   // Create source maps
@@ -176,25 +176,25 @@ Create a `package.json` in your projects root folder using `npm init` or `yarn i
 Install the development dependencies:
 
 ```bash
-npm installl webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babe/preset-typescript babel-loader --save-dev
+npm install webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babel/preset-typescript @babel/plugin-transform-runtime babel-loader --save-dev
 ```
 
 or
 
 ```bash
-yarn add webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babe/preset-typescript babel-loader -D
+yarn add webpack webpack-cli aws-sam-webpack-plugin @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/preset-env @babel/preset-typescript @babel/plugin-transform-runtime babel-loader -D
 ```
 
 Install the production dependencies:
 
 ```bash
-npm install aws-sdk source-map-support --save
+npm install aws-sdk source-map-support @babel/runtime --save
 ```
 
 or
 
 ```bash
-yarn add aws-sdk source-map-support --save
+yarn add aws-sdk source-map-support @babel/runtime --save
 ```
 
 <h3 align="center">webpack.config.js</h3>
@@ -217,9 +217,9 @@ module.exports = {
 
   // Write the output to the .aws-sam/build folder
   output: {
-    filename: "[name]/app.js",
+    filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: __dirname + "/.aws-sam/build/"
+    path: path.resolve(".")
   },
 
   // Create source maps
@@ -260,7 +260,15 @@ Create a `babel.config.js` file at the project root
 
 ```javascript
 module.exports = {
-  plugins: ["@babel/proposal-class-properties"],
+  plugins: [
+    "@babel/proposal-class-properties",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        regenerator: true
+      }
+    ]
+  ],
   presets: ["@babel/env", "@babel/typescript"]
 };
 ```
@@ -323,7 +331,7 @@ const awsSamPlugin = new AwsSamPlugin({
 });
 ```
 
-You also need to modify the `output` section of your `webpack.config.js` so that Webpack uses the plugins `.filename()` method to determine the name of the output file. This will create a `.aws-sam/build` folder in correct SAM project root.
+If you are upgrading from instructions prior to 0.5.0 you also need to modify the `output` section of your `webpack.config.js` so that Webpack uses the plugins `.filename()` method to determine the name of the output file. This will create a `.aws-sam/build` folder in correct SAM project root.
 
 ```javascript
 module.exports = {
