@@ -162,7 +162,7 @@ class AwsSamPlugin {
           if (!fs.existsSync(".vscode")) {
             fs.mkdirSync(".vscode");
           }
-          fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig));
+          fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig, null, 2));
         }
       } else {
         console.log("It looks like SamPlugin.entry() was not called");
