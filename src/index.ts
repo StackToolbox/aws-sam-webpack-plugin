@@ -22,7 +22,7 @@ class AwsSamPlugin {
   private options: AwsSamPluginOptions;
   private samConfigs: Array<{ buildRoot: string; entryPointName: string; outFile: string; projectKey: string; samConfig: any }>;
 
-  constructor(options: Partial<AwsSamPluginOptions>) {
+  constructor(options?: Partial<AwsSamPluginOptions>) {
     this.entryPoints = {};
     this.options = {
       projects: { default: "." },
@@ -153,7 +153,7 @@ class AwsSamPlugin {
   }
 
   public apply(compiler: any) {
-    compiler.hooks.afterEmit.tap("SamPlugin", (compilation: any) => {
+    compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
           fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
@@ -171,4 +171,4 @@ class AwsSamPlugin {
   }
 }
 
-module.exports = AwsSamPlugin;
+export = AwsSamPlugin;
