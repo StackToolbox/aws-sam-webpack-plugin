@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buggy/sam-webpack-plugin.git"
+    "url": "git+https://github.com/graphboss/aws-sam-webpack-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -19,12 +19,12 @@
     "typescript",
     "babel"
   ],
-  "author": "Richard Buggy <rich@goingserverless.com>",
+  "author": "Richard Buggy <rich@graphboss.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buggy/sam-webpack-plugin/issues"
+    "url": "https://github.com/graphboss/aws-sam-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/buggy/sam-webpack-plugin#readme",
+  "homepage": "https://github.com/graphboss/aws-sam-webpack-pluginbuggy#readme",
   "dependencies": {
     "js-yaml": "^3.13.1",
     "yaml-cfn": "^0.2.3"
