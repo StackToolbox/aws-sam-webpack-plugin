@@ -63,8 +63,8 @@ class AwsSamPlugin {
           throw new Error(`${resourceKey} is missing Properties`);
         }
         // Check the runtime is supported
-        if (!["nodejs8.10", "nodejs10.x", "nodejs12.x"].includes(properties.Runtime ?? defaultRuntime)) {
-          throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs8.10, nodejs10.x or nodejs12.x`);
+        if (!["nodejs10.x", "nodejs12.x"].includes(properties.Runtime ?? defaultRuntime)) {
+          throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x or nodejs12.x`);
         }
 
         // Continue with a warning if they're using inline code
