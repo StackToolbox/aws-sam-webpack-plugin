@@ -64,6 +64,7 @@ Create a `webpack.config.js` file in your projects root folder and add this plug
 Example:
 
 ```js
+const path = require("path");
 const AwsSamPlugin = require("aws-sam-webpack-plugin");
 
 const awsSamPlugin = new AwsSamPlugin();
@@ -206,6 +207,7 @@ Create a `webpack.config.js` file in your projects root folder and add this plug
 Example:
 
 ```js
+const path = require("path");
 const AwsSamPlugin = require("aws-sam-webpack-plugin");
 
 const awsSamPlugin = new AwsSamPlugin();
