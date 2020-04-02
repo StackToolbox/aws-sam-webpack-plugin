@@ -17,6 +17,7 @@ interface IEntryPointMap {
 
 class AwsSamPlugin {
   private static defaultTemplates = ["template.yaml", "template.yml"];
+  private originalTemplateName = "template.yaml";
   private entryPoints: IEntryPointMap;
   private launchConfig: any;
   private options: AwsSamPluginOptions;
@@ -37,6 +38,7 @@ class AwsSamPlugin {
     for (const f of AwsSamPlugin.defaultTemplates) {
       const template = `${prefix}/${f}`;
       if (fs.existsSync(template)) {
+        this.originalTemplateName = f;
         return template;
       }
     }
@@ -156,7 +158,7 @@ class AwsSamPlugin {
     compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
-          fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
+          fs.writeFileSync(`${samConfig.buildRoot}/${this.originalTemplateName}`, yamlDump(samConfig.samConfig));
         }
         if (this.options.vscodeDebug) {
           if (!fs.existsSync(".vscode")) {
