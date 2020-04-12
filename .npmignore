@@ -1,4 +1,7 @@
 .gitignore
+__mocks__
+__tests__
+coverage
 prettier.config.js
 src
 tsconfig.json

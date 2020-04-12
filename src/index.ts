@@ -15,25 +15,38 @@ interface IEntryPointMap {
   [pname: string]: string;
 }
 
+interface SamConfig {
+  buildRoot: string;
+  entryPointName: string;
+  outFile: string;
+  projectKey: string;
+  samConfig: any;
+  templateName: string;
+}
+
+interface IEntryForResult {
+  entryPoints: IEntryPointMap;
+  launchConfigs: any[];
+  samConfigs: SamConfig[];
+}
+
 class AwsSamPlugin {
   private static defaultTemplates = ["template.yaml", "template.yml"];
-  private entryPoints: IEntryPointMap;
   private launchConfig: any;
   private options: AwsSamPluginOptions;
-  private samConfigs: Array<{ buildRoot: string; entryPointName: string; outFile: string; projectKey: string; samConfig: any }>;
+  private samConfigs: SamConfig[];
 
   constructor(options?: Partial<AwsSamPluginOptions>) {
-    this.entryPoints = {};
     this.options = {
       projects: { default: "." },
       vscodeDebug: true,
-      ...options
+      ...options,
     };
     this.samConfigs = [];
   }
 
   // Returns the name of the SAM template file or null if it's not found
-  private templateName(prefix: string) {
+  public findTemplateName(prefix: string) {
     for (const f of AwsSamPlugin.defaultTemplates) {
       const template = `${prefix}/${f}`;
       if (fs.existsSync(template)) {
@@ -45,8 +58,12 @@ class AwsSamPlugin {
   }
 
   // Returns a webpack entry object based on the SAM template
-  private entryFor(projectKey: string, projectTemplate: string) {
-    const samConfig = yamlParse(fs.readFileSync(projectTemplate).toString());
+  public entryFor(projectKey: string, projectPath: string, projectTemplateName: string, projectTemplate: string): IEntryForResult {
+    const entryPoints: IEntryPointMap = {};
+    const launchConfigs: any[] = [];
+    const samConfigs: SamConfig[] = [];
+
+    const samConfig = yamlParse(projectTemplate);
 
     const defaultRuntime = samConfig.Globals?.Function?.Runtime ?? null;
     const defaultHandler = samConfig.Globals?.Function?.Handler ?? null;
@@ -69,7 +86,9 @@ class AwsSamPlugin {
 
         // Continue with a warning if they're using inline code
         if (properties.InlineCode) {
-          console.log(`WARNING: This plugin does not compile inline code. The InlineCode for '${resourceKey}' will be copied 'as is'.`);
+          console.log(
+            `WARNING: This plugin does not compile inline code. The InlineCode for '${resourceKey}' will be copied 'as is'.`
+          );
           continue;
         }
 
@@ -89,13 +108,13 @@ class AwsSamPlugin {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
 
-        const projectPath = path.relative(".", path.dirname(projectTemplate));
-        const basePath = codeUri ? `./${projectPath}/${codeUri}` : `./${projectPath}`;
+        const basePathPrefix = projectPath === "" ? "." : `./${projectPath}`;
+        const basePath = codeUri ? `${basePathPrefix}/${codeUri}` : `${basePathPrefix}`;
         const fileBase = `${basePath}/${handlerComponents[0]}`;
 
         const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;
         // Generate the launch config for the VS Code debugger
-        this.launchConfig.configurations.push({
+        launchConfigs.push({
           name: projectKey === "default" ? resourceKey : `${projectKey}:${resourceKey}`,
           type: "node",
           request: "attach",
@@ -106,46 +125,75 @@ class AwsSamPlugin {
           protocol: "inspector",
           stopOnEntry: false,
           outFiles: [`\${workspaceRoot}/${buildRoot}/${resourceKey}/app.js`],
-          sourceMaps: true
+          sourceMaps: true,
         });
 
         // Add the entry point for webpack
         const entryPointName = projectKey === "default" ? resourceKey : `${projectKey}#${resourceKey}`;
-        this.entryPoints[entryPointName] = fileBase;
+        entryPoints[entryPointName] = fileBase;
         samConfig.Resources[resourceKey].Properties.CodeUri = resourceKey;
         samConfig.Resources[resourceKey].Properties.Handler = `app.${handlerComponents[1]}`;
-        this.samConfigs.push({ buildRoot, entryPointName, outFile: `./${buildRoot}/${resourceKey}/app.js`, projectKey, samConfig });
+        samConfigs.push({
+          buildRoot,
+          entryPointName,
+          outFile: `./${buildRoot}/${resourceKey}/app.js`,
+          projectKey,
+          samConfig,
+          templateName: projectTemplateName,
+        });
       }
     }
+
+    return { entryPoints, launchConfigs, samConfigs };
   }
 
   public entry() {
     // Reset the entry points and launch config
-    this.entryPoints = {};
+    let allEntryPoints: IEntryPointMap = {};
     this.launchConfig = {
       version: "0.2.0",
-      configurations: []
+      configurations: [],
     };
     this.samConfigs = [];
 
+    // Loop through each of the "projects" from the options
     for (const projectKey in this.options.projects) {
-      const projectTemplate = this.options.projects[projectKey];
+      // The value will be the name of a folder or a template file
+      const projectFolderOrTemplateName = this.options.projects[projectKey];
 
-      const template = fs.statSync(projectTemplate).isFile() ? projectTemplate : this.templateName(fs.realpathSync(projectTemplate));
+      // If the projectFolderOrTemplateName isn't a file then we should look for common template file names
+      const projectTemplateName = fs.statSync(projectFolderOrTemplateName).isFile()
+        ? projectFolderOrTemplateName
+        : this.findTemplateName(fs.realpathSync(projectFolderOrTemplateName));
 
-      if (template === null) {
-        // This works because only this.templateName() should return null
-        throw new Error(`Could not find ${AwsSamPlugin.defaultTemplates.join(" or ")} in ${projectTemplate}`);
+      // If we still cannot find a project template name then throw an error because something is wrong
+      if (projectTemplateName === null) {
+        throw new Error(`Could not find ${AwsSamPlugin.defaultTemplates.join(" or ")} in ${projectFolderOrTemplateName}`);
       }
 
-      this.entryFor(projectKey, template);
+      // Retrieve the entry points, VS Code debugger launch configs and SAM config for this entry
+      const { entryPoints, launchConfigs, samConfigs } = this.entryFor(
+        projectKey,
+        path.relative(".", path.dirname(projectTemplateName)),
+        path.basename(projectTemplateName),
+        fs.readFileSync(projectTemplateName).toString()
+      );
+
+      // Addd them to the entry pointsm launch configs and SAM confis we've already discovered.
+      allEntryPoints = {
+        ...allEntryPoints,
+        ...entryPoints,
+      };
+      this.launchConfig.configurations = [...this.launchConfig.configurations, ...launchConfigs];
+      this.samConfigs = [...this.samConfigs, ...samConfigs];
     }
 
-    return this.entryPoints;
+    // Once we're done return the entry points
+    return allEntryPoints;
   }
 
   public filename(chunkData: any) {
-    const samConfig = this.samConfigs.find(c => c.entryPointName === chunkData.chunk.name);
+    const samConfig = this.samConfigs.find((c) => c.entryPointName === chunkData.chunk.name);
     if (!samConfig) {
       throw new Error(`Unable to find filename for ${chunkData.chunk.name}`);
     }
@@ -156,7 +204,7 @@ class AwsSamPlugin {
     compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
-          fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
+          fs.writeFileSync(`${samConfig.buildRoot}/${samConfig.templateName}`, yamlDump(samConfig.samConfig));
         }
         if (this.options.vscodeDebug) {
           if (!fs.existsSync(".vscode")) {
@@ -165,7 +213,7 @@ class AwsSamPlugin {
           fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig, null, 2));
         }
       } else {
-        console.log("It looks like SamPlugin.entry() was not called");
+        throw new Error("It looks like AwsSamPlugin.entry() was not called");
       }
     });
   }

@@ -1,0 +1,614 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Function CodeUri can be set at the function 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function CodeUri can be set global or at the function 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "CodeUri": "src/my-lambda",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function CodeUri can be set globally 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "CodeUri": "src/my-lambda",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Handler can be set at the function 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Handler can be set global and at function 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Handler": "app.globalHandler",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Handler can be set globally 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Handler": "app.handler",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime can be set at the function to nodejs10.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs10.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime can be set at the function to nodejs12.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime can be set global and at function 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs8.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs12.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime can be set globally to nodejs10.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs10.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime can be set globally to nodejs12.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs12.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`When the template is in a subfolder it should match the happy snapshot 1`] = `
+Object {
+  "entryPoints": Object {
+    "xxx#MyLambda": "./xxx/src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/xxx/.aws-sam/build/MyLambda",
+      "name": "xxx:MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/xxx/.aws-sam/build/MyLambda/app.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": "xxx/.aws-sam/build",
+      "entryPointName": "xxx#MyLambda",
+      "outFile": "./xxx/.aws-sam/build/MyLambda/app.js",
+      "projectKey": "xxx",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs12.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
