@@ -46,7 +46,7 @@ class AwsSamPlugin {
   }
 
   // Returns the name of the SAM template file or null if it's not found
-  public findTemplateName(prefix: string) {
+  private findTemplateName(prefix: string) {
     for (const f of AwsSamPlugin.defaultTemplates) {
       const template = `${prefix}/${f}`;
       if (fs.existsSync(template)) {
@@ -164,7 +164,7 @@ class AwsSamPlugin {
       // If the projectFolderOrTemplateName isn't a file then we should look for common template file names
       const projectTemplateName = fs.statSync(projectFolderOrTemplateName).isFile()
         ? projectFolderOrTemplateName
-        : this.findTemplateName(fs.realpathSync(projectFolderOrTemplateName));
+        : this.findTemplateName(projectFolderOrTemplateName);
 
       // If we still cannot find a project template name then throw an error because something is wrong
       if (projectTemplateName === null) {
@@ -206,7 +206,7 @@ class AwsSamPlugin {
         for (const samConfig of this.samConfigs) {
           fs.writeFileSync(`${samConfig.buildRoot}/${samConfig.templateName}`, yamlDump(samConfig.samConfig));
         }
-        if (this.options.vscodeDebug) {
+        if (this.options.vscodeDebug !== false) {
           if (!fs.existsSync(".vscode")) {
             fs.mkdirSync(".vscode");
           }

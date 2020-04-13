@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Happy path with VS Code debugging disabled 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "files": Object {
+    ".aws-sam/build/template.yaml": "AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Globals:
+  Function:
+    Runtime: nodejs10.x
+Resources:
+  MyLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: MyLambda
+      Handler: app.handler
+",
+  },
+}
+`;
+
 exports[`Happy path with default constructor works 1`] = `
 Object {
   "entryPoints": Object {
@@ -84,14 +106,49 @@ Resources:
 }
 `;
 
-exports[`Happy path with multiple projects works 1`] = `
+exports[`Happy path with multiple projects and different template names works 1`] = `
 Object {
   "entryPoints": Object {
     "a#MyLambda": "./project-a/src/my-lambda/app",
     "b#MyLambda": "./project-b/src/my-lambda/app",
   },
   "files": Object {
-    ".aws-sam/build/template.yaml": "AWSTemplateFormatVersion: 2010-09-09
+    ".vscode/launch.json": "{
+  \\"version\\": \\"0.2.0\\",
+  \\"configurations\\": [
+    {
+      \\"name\\": \\"a:MyLambda\\",
+      \\"type\\": \\"node\\",
+      \\"request\\": \\"attach\\",
+      \\"address\\": \\"localhost\\",
+      \\"port\\": 5858,
+      \\"localRoot\\": \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda\\",
+      \\"remoteRoot\\": \\"/var/task\\",
+      \\"protocol\\": \\"inspector\\",
+      \\"stopOnEntry\\": false,
+      \\"outFiles\\": [
+        \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda/app.js\\"
+      ],
+      \\"sourceMaps\\": true
+    },
+    {
+      \\"name\\": \\"b:MyLambda\\",
+      \\"type\\": \\"node\\",
+      \\"request\\": \\"attach\\",
+      \\"address\\": \\"localhost\\",
+      \\"port\\": 5858,
+      \\"localRoot\\": \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda\\",
+      \\"remoteRoot\\": \\"/var/task\\",
+      \\"protocol\\": \\"inspector\\",
+      \\"stopOnEntry\\": false,
+      \\"outFiles\\": [
+        \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda/app.js\\"
+      ],
+      \\"sourceMaps\\": true
+    }
+  ]
+}",
+    "project-a/.aws-sam/build/template-a.yaml": "AWSTemplateFormatVersion: 2010-09-09
 Transform: 'AWS::Serverless-2016-10-31'
 Globals:
   Function:
@@ -103,6 +160,29 @@ Resources:
       CodeUri: MyLambda
       Handler: app.handler
 ",
+    "project-b/.aws-sam/build/template-b.yaml": "AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Globals:
+  Function:
+    Runtime: nodejs10.x
+Resources:
+  MyLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: MyLambda
+      Handler: app.handler
+",
+  },
+}
+`;
+
+exports[`Happy path with multiple projects works 1`] = `
+Object {
+  "entryPoints": Object {
+    "a#MyLambda": "./project-a/src/my-lambda/app",
+    "b#MyLambda": "./project-b/src/my-lambda/app",
+  },
+  "files": Object {
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [

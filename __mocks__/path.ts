@@ -19,6 +19,12 @@ path.__setMockRelatives = (relatives: PathMap) => {
   mockRelative = relatives;
 };
 
+path.__clearMocks = (): void => {
+  mockBasename = {};
+  mockDirname = {};
+  mockRelative = {};
+}
+
 path.basename = (name: string): string => {
   if (name in mockBasename) {
     return mockBasename[name];

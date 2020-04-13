@@ -21,51 +21,24 @@ Resources:
       Handler: app.handler
 `;
 
-describe("Find the template name", () => {
-  test("will find a template.yaml", () => {
-    const plugin = new SamPlugin();
-
-    // @ts-ignore
-    fs.__setMockFiles({ "./template.yaml": "something" });
-
-    expect(plugin.findTemplateName(".")).toBe("./template.yaml");
-  });
-
-  test("will find a template.yml", () => {
-    const plugin = new SamPlugin();
-
-    // @ts-ignore
-    fs.__setMockFiles({ "./template.yml": "something" });
-
-    expect(plugin.findTemplateName(".")).toBe("./template.yml");
-  });
-
-  test("will find nothing", () => {
-    const plugin = new SamPlugin();
-
-    // @ts-ignore
-    fs.__setMockFiles({});
-
-    expect(plugin.findTemplateName(".")).toBeNull();
-  });
-});
-
 test("Happy path with default constructor works", () => {
   const plugin = new SamPlugin();
 
   // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
   fs.__setMockDirs(["."]);
   // @ts-ignore
-  fs.__setMockFiles({ "/project/template.yaml": samTemplate });
-  // @ts-ignore
-  fs.__setMockRealPaths({ ".": "/project" });
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
 
   // @ts-ignore
-  path.__setMockBasenames({ "/project/template.yaml": "template.yaml" });
+  path.__clearMocks();
   // @ts-ignore
-  path.__setMockDirnames({ "/project/template.yaml": "/project" });
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
   // @ts-ignore
-  path.__setMockRelatives({ ".#/project": "" });
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
 
   const entryPoints = plugin.entry();
 
@@ -91,18 +64,59 @@ test("Happy path with empty options in the constructor works", () => {
   const plugin = new SamPlugin({});
 
   // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
   fs.__setMockDirs(["."]);
   // @ts-ignore
-  fs.__setMockFiles({ "/project/template.yaml": samTemplate });
-  // @ts-ignore
-  fs.__setMockRealPaths({ ".": "/project" });
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
 
   // @ts-ignore
-  path.__setMockBasenames({ "/project/template.yaml": "template.yaml" });
+  path.__clearMocks();
   // @ts-ignore
-  path.__setMockDirnames({ "/project/template.yaml": "/project" });
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
   // @ts-ignore
-  path.__setMockRelatives({ ".#/project": "" });
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  let afterEmit: (_compilation: any) => void;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          afterEmit = f;
+        },
+      },
+    },
+  });
+  // @ts-ignore
+  afterEmit(null);
+
+  // @ts-ignore
+  expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
+});
+
+test("Happy path with VS Code debugging disabled", () => {
+  const plugin = new SamPlugin({ vscodeDebug: false });
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
 
   const entryPoints = plugin.entry();
 
@@ -128,18 +142,62 @@ test("Happy path with multiple projects works", () => {
   const plugin = new SamPlugin({ projects: { a: "project-a", b: "project-b" } });
 
   // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
   fs.__setMockDirs(["project-a", "project-b"]);
   // @ts-ignore
-  fs.__setMockFiles({ "/project-a/template.yaml": samTemplate, "/project-b/template.yaml": samTemplate });
-  // @ts-ignore
-  fs.__setMockRealPaths({ "project-a": "/project-a", "project-b": "/project-b" });
+  fs.__setMockFiles({ "project-a/template.yaml": samTemplate, "project-b/template.yaml": samTemplate });
 
   // @ts-ignore
-  path.__setMockBasenames({ "/project-a/template.yaml": "template.yaml", "/project-b/template.yaml": "template.yaml" });
+  path.__clearMocks();
   // @ts-ignore
-  path.__setMockDirnames({ "/project-a/template.yaml": "/project-a", "/project-b/template.yaml": "/project-b" });
+  path.__setMockBasenames({ "project-a/template.yaml": "template.yaml", "project-b/template.yaml": "template.yaml" });
   // @ts-ignore
-  path.__setMockRelatives({ ".#/project-a": "project-a", ".#/project-b": "project-b" });
+  path.__setMockDirnames({ "project-a/template.yaml": "project-a", "project-b/template.yaml": "project-b" });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#project-a": "project-a", ".#project-b": "project-b" });
+
+  const entryPoints = plugin.entry();
+
+  let afterEmit: (_compilation: any) => void;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          afterEmit = f;
+        },
+      },
+    },
+  });
+  // @ts-ignore
+  afterEmit(null);
+
+  // @ts-ignore
+  expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
+});
+
+test("Happy path with multiple projects and different template names works", () => {
+  const plugin = new SamPlugin({ projects: { a: "project-a/template-a.yaml", b: "project-b/template-b.yaml" } });
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["project-a", "project-b"]);
+  // @ts-ignore
+  fs.__setMockFiles({ "project-a/template-a.yaml": samTemplate, "project-b/template-b.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({
+    "project-a/template-a.yaml": "template-a.yaml",
+    "project-b/template-b.yaml": "template-b.yaml",
+  });
+  // @ts-ignore
+  path.__setMockDirnames({ "project-a/template-a.yaml": "project-a", "project-b/template-b.yaml": "project-b" });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#project-a": "project-a", ".#project-b": "project-b" });
 
   const entryPoints = plugin.entry();
 
@@ -163,6 +221,11 @@ test("Happy path with multiple projects works", () => {
 
 test("Calling apply() before entry() throws an error", () => {
   const plugin = new SamPlugin();
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  path.__clearMocks();
 
   let afterEmit: (_compilation: any) => void;
 

@@ -236,7 +236,9 @@ Resources:
       CodeUri: src/my-lambda
       Runtime: nodejs12.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError("MyLambda is missing a Handler");
+    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+      "MyLambda is missing a Handler"
+    );
   });
 });
 
@@ -315,7 +317,9 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError("MyLambda is missing a CodeUri");
+    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+      "MyLambda is missing a CodeUri"
+    );
   });
 });
 
@@ -329,7 +333,9 @@ Resources:
   MyLambda:
     Type: AWS::Serverless::Function
 `;
-  expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError("MyLambda is missing Properties");
+  expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    "MyLambda is missing Properties"
+  );
 });
 
 test("Allows Inline code with warning", () => {

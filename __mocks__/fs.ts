@@ -24,6 +24,13 @@ fs.__getMockWrittenFiles = (): FileMap => {
   return mockWrittenFiles;
 }
 
+fs.__clearMocks = (): void => {
+  mockDirs = [];
+  mockFiles = {};
+  mockRealPaths = {};
+  mockWrittenFiles = {};
+}
+
 fs.existsSync = (name: string): boolean => {
   if (name in mockFiles || `./${name}` in mockFiles) {
     return true;
