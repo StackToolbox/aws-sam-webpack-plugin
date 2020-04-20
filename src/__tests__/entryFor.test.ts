@@ -338,6 +338,24 @@ Resources:
   );
 });
 
+test("Fails if Hanlde doesn't include a '.'", () => {
+  const plugin = new SamPlugin();
+  const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: apphandler
+      Runtime: nodejs12.x
+`;
+  expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    'MyLambda Handler must contain exactly one "."'
+  );
+});
+
 test("Allows Inline code with warning", () => {
   const plugin = new SamPlugin();
   const template = `
@@ -560,4 +578,25 @@ describe("When the template is in a subfolder", () => {
     const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
     expect(entries.samConfigs[0].outFile).toEqual("./xxx/.aws-sam/build/MyLambda/app.js");
   });
+});
+
+test("It ignores non AWS::Serverless::Function resosurces", () => {
+  const plugin = new SamPlugin();
+  const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+      Runtime: nodejs10.x
+
+  FakeResource:
+    Type: AWS::FakeResource::NahNah
+`;
+  const entries = plugin.entryFor("default", "", "template.yaml", template);
+  expect(entries).toMatchSnapshot();
 });

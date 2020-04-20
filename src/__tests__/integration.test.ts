@@ -95,6 +95,53 @@ test("Happy path with empty options in the constructor works", () => {
   // @ts-ignore
   afterEmit(null);
 
+  // Does create a .vscode folder
+  // @ts-ignore
+  expect(fs.__getMockMakedirs().includes(".vscode")).toBeTruthy();
+
+  // @ts-ignore
+  expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
+});
+
+test("Happy path with empty options in the constructor works and an existing .vscode folder", () => {
+  const plugin = new SamPlugin({});
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs([".", ".vscode"]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  let afterEmit: (_compilation: any) => void;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          afterEmit = f;
+        },
+      },
+    },
+  });
+  // @ts-ignore
+  afterEmit(null);
+
+  // Does not create a .vscode folder
+  // @ts-ignore
+  expect(fs.__getMockMakedirs().includes(".vscode")).toBeFalsy();
+
   // @ts-ignore
   expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
 });
@@ -134,6 +181,10 @@ test("Happy path with VS Code debugging disabled", () => {
   // @ts-ignore
   afterEmit(null);
 
+  // Does not create a .vscode folder
+  // @ts-ignore
+  expect(fs.__getMockMakedirs().includes(".vscode")).toBeFalsy();
+  
   // @ts-ignore
   expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
 });
@@ -240,4 +291,77 @@ test("Calling apply() before entry() throws an error", () => {
   });
   // @ts-ignore
   expect(() => afterEmit(null)).toThrowError("It looks like AwsSamPlugin.entry() was not called");
+});
+
+test("Happy path for filename() when the Lambda is found", () => {
+  const plugin = new SamPlugin();
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  expect(plugin.filename({ chunk: { name: "MyLambda" } })).toEqual("./.aws-sam/build/MyLambda/app.js");
+});
+
+test("Fails when filename() is passed an invalid lambda name", () => {
+  const plugin = new SamPlugin();
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  //console.log("XXX", plugin.filename({chunk: { name: "FakeLambda" }}));
+  expect(() => plugin.filename({ chunk: { name: "FakeLambda" } })).toThrowError(
+    "Unable to find filename for FakeLambda"
+  );
+});
+
+test("Fails when there is no template.yaml or template.yml and you provided a directory", () => {
+  const plugin = new SamPlugin();
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // // @ts-ignore
+  // fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  // path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // // @ts-ignore
+  // path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  expect(() => plugin.entry()).toThrowError("Could not find template.yaml or template.yml in .");
 });

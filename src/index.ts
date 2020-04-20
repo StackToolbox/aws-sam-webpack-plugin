@@ -109,7 +109,7 @@ class AwsSamPlugin {
         }
 
         const basePathPrefix = projectPath === "" ? "." : `./${projectPath}`;
-        const basePath = codeUri ? `${basePathPrefix}/${codeUri}` : `${basePathPrefix}`;
+        const basePath = `${basePathPrefix}/${codeUri}`;
         const fileBase = `${basePath}/${handlerComponents[0]}`;
 
         const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;

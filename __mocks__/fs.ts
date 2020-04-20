@@ -24,21 +24,30 @@ fs.__getMockWrittenFiles = (): FileMap => {
   return mockWrittenFiles;
 }
 
+let mockMakeDirs: string[] = [];
+fs.__getMockMakedirs = (): string[] => {
+  return mockMakeDirs;
+}
 fs.__clearMocks = (): void => {
   mockDirs = [];
   mockFiles = {};
   mockRealPaths = {};
   mockWrittenFiles = {};
+  mockMakeDirs = [];
 }
 
 fs.existsSync = (name: string): boolean => {
   if (name in mockFiles || `./${name}` in mockFiles) {
     return true;
   }
+  if (mockDirs.includes(name)) {
+    return true;
+  }
   return false;
 };
 
 fs.mkdirSync = (name: string): void => {
+  mockMakeDirs.push(name);
 }
 
 fs.readFileSync = (name: string): string => {
