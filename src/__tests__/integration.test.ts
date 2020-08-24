@@ -365,3 +365,43 @@ test("Fails when there is no template.yaml or template.yml and you provided a di
 
   expect(() => plugin.entry()).toThrowError("Could not find template.yaml or template.yml in .");
 });
+
+
+test("Happy path with an output file specified", () => {
+  const plugin = new SamPlugin({ outFile: "index" });
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  let afterEmit: (_compilation: any) => void;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          afterEmit = f;
+        },
+      },
+    },
+  });
+  // @ts-ignore
+  afterEmit(null);
+
+  // @ts-ignore
+  expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
+});

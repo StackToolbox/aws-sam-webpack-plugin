@@ -18,7 +18,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -39,7 +39,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -57,7 +57,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs10.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -75,7 +75,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -92,7 +92,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
     );
   });
@@ -114,7 +114,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
     );
   });
@@ -133,7 +133,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs8.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
     );
   });
@@ -156,7 +156,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 });
@@ -179,7 +179,7 @@ Resources:
       CodeUri: src/my-lambda
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -197,7 +197,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -219,7 +219,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -236,7 +236,7 @@ Resources:
       CodeUri: src/my-lambda
       Runtime: nodejs12.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a Handler"
     );
   });
@@ -260,7 +260,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -278,7 +278,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -300,7 +300,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
   });
 
@@ -317,7 +317,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a CodeUri"
     );
   });
@@ -333,7 +333,7 @@ Resources:
   MyLambda:
     Type: AWS::Serverless::Function
 `;
-  expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
     "MyLambda is missing Properties"
   );
 });
@@ -351,7 +351,7 @@ Resources:
       Handler: apphandler
       Runtime: nodejs12.x
 `;
-  expect(() => plugin.entryFor("default", "", "template.yaml", template)).toThrowError(
+  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
     'MyLambda Handler must contain exactly one "."'
   );
 });
@@ -372,7 +372,7 @@ Resources:
 `;
   const originalLog = console.log;
   console.log = jest.fn();
-  const entries = plugin.entryFor("default", "", "template.yaml", template);
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
   //   expect(entries).toMatchSnapshot();
   expect(console.log).toBeCalledWith(
     "WARNING: This plugin does not compile inline code. The InlineCode for 'MyLambda' will be copied 'as is'."
@@ -398,7 +398,7 @@ describe("Launch config name", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
 
     expect(entries.launchConfigs[0].name).toEqual("MyLambda");
   });
@@ -420,7 +420,7 @@ describe("Launch config name", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app");
 
     expect(entries.launchConfigs[0].name).toEqual("xxx:MyLambda");
   });
@@ -444,7 +444,7 @@ describe("SAM config entryPointName:", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template);
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
 
     expect(entries.samConfigs[0].entryPointName).toEqual("MyLambda");
   });
@@ -466,7 +466,7 @@ describe("SAM config entryPointName:", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app");
 
     expect(entries.samConfigs[0].entryPointName).toEqual("xxx#MyLambda");
   });
@@ -490,7 +490,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
 
     expect(entries).toMatchSnapshot();
   });
@@ -512,7 +512,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
     expect(entries.entryPoints["xxx#MyLambda"]).toEqual("./xxx/src/my-lambda/app");
   });
 
@@ -533,7 +533,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
     expect(entries.launchConfigs[0].localRoot).toEqual("${workspaceRoot}/xxx/.aws-sam/build/MyLambda");
   });
 
@@ -554,7 +554,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
     expect(entries.samConfigs[0].buildRoot).toEqual("xxx/.aws-sam/build");
   });
 
@@ -575,7 +575,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template);
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
     expect(entries.samConfigs[0].outFile).toEqual("./xxx/.aws-sam/build/MyLambda/app.js");
   });
 });
@@ -597,6 +597,27 @@ Resources:
   FakeResource:
     Type: AWS::FakeResource::NahNah
 `;
-  const entries = plugin.entryFor("default", "", "template.yaml", template);
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+  expect(entries).toMatchSnapshot();
+});
+
+test("JS output files uses outFile parameter", () => {
+  const plugin = new SamPlugin();
+  const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+`;
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "index");
   expect(entries).toMatchSnapshot();
 });

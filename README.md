@@ -351,6 +351,7 @@ Once you have done this you should be able to execute Webpack from the root fold
 
 | Name              | Type        | Default           | Description                                                                                                                                                                           |
 | :---------------- | :---------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`outFile`**     | `{String}`  | `app`             | The name of the Javascript file to output without the `.js` extension. For example: `index` will generate `index.js`. By default it will use `app`                                    |
 | **`projects`**    | `{Object}`  | `{"default":"."}` | A JavaScript object where the key is the name of the project and the value is the path to the SAM template or a folder containing a `template.yaml` or `template.yml` for the project |
 | **`vscodeDebug`** | `{Boolean}` | `true`            | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local S                                                                                                  |
 

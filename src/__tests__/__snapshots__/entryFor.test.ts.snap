@@ -612,6 +612,58 @@ Object {
 }
 `;
 
+exports[`JS output files uses outFile parameter 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceRoot}/.aws-sam/build/MyLambda/index.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/index.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs12.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "index.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`When the template is in a subfolder it should match the happy snapshot 1`] = `
 Object {
   "entryPoints": Object {

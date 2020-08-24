@@ -8,6 +8,7 @@ interface AwsSamProjectMap {
 
 interface AwsSamPluginOptions {
   projects: AwsSamProjectMap;
+  outFile: string;
   vscodeDebug: boolean;
 }
 
@@ -39,6 +40,7 @@ class AwsSamPlugin {
   constructor(options?: Partial<AwsSamPluginOptions>) {
     this.options = {
       projects: { default: "." },
+      outFile: "app",
       vscodeDebug: true,
       ...options,
     };
@@ -58,7 +60,7 @@ class AwsSamPlugin {
   }
 
   // Returns a webpack entry object based on the SAM template
-  public entryFor(projectKey: string, projectPath: string, projectTemplateName: string, projectTemplate: string): IEntryForResult {
+  public entryFor(projectKey: string, projectPath: string, projectTemplateName: string, projectTemplate: string, outFile: string): IEntryForResult {
     const entryPoints: IEntryPointMap = {};
     const launchConfigs: any[] = [];
     const samConfigs: SamConfig[] = [];
@@ -124,7 +126,7 @@ class AwsSamPlugin {
           remoteRoot: "/var/task",
           protocol: "inspector",
           stopOnEntry: false,
-          outFiles: [`\${workspaceRoot}/${buildRoot}/${resourceKey}/app.js`],
+          outFiles: [`\${workspaceRoot}/${buildRoot}/${resourceKey}/${outFile}.js`],
           sourceMaps: true,
         });
 
@@ -132,11 +134,11 @@ class AwsSamPlugin {
         const entryPointName = projectKey === "default" ? resourceKey : `${projectKey}#${resourceKey}`;
         entryPoints[entryPointName] = fileBase;
         samConfig.Resources[resourceKey].Properties.CodeUri = resourceKey;
-        samConfig.Resources[resourceKey].Properties.Handler = `app.${handlerComponents[1]}`;
+        samConfig.Resources[resourceKey].Properties.Handler = `${outFile}.${handlerComponents[1]}`;
         samConfigs.push({
           buildRoot,
           entryPointName,
-          outFile: `./${buildRoot}/${resourceKey}/app.js`,
+          outFile: `./${buildRoot}/${resourceKey}/${outFile}.js`,
           projectKey,
           samConfig,
           templateName: projectTemplateName,
@@ -155,6 +157,9 @@ class AwsSamPlugin {
       configurations: [],
     };
     this.samConfigs = [];
+
+    // The name of the out file
+    const outFile = this.options.outFile;
 
     // Loop through each of the "projects" from the options
     for (const projectKey in this.options.projects) {
@@ -176,7 +181,8 @@ class AwsSamPlugin {
         projectKey,
         path.relative(".", path.dirname(projectTemplateName)),
         path.basename(projectTemplateName),
-        fs.readFileSync(projectTemplateName).toString()
+        fs.readFileSync(projectTemplateName).toString(),
+        outFile
       );
 
       // Addd them to the entry pointsm launch configs and SAM confis we've already discovered.
