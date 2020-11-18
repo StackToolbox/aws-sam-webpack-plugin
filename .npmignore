@@ -1,7 +1,10 @@
+.editorconfig
+.github
 .gitignore
 __mocks__
 __tests__
 coverage
+jest.config.js
 prettier.config.js
 src
 tsconfig.json

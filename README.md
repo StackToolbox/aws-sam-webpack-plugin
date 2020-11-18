@@ -46,13 +46,13 @@ yarn add webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/
 Install the production dependencies:
 
 ```bash
-npm install aws-sdk source-map-support --save
+npm install aws-sdk --save
 ```
 
 or
 
 ```bash
-yarn add aws-sdk source-map-support --save
+yarn add aws-sdk --save
 ```
 
 <h3 align="center">webpack.config.js</h3>
@@ -312,6 +312,16 @@ MyFunction:
     CodeUri: src/my-function
     Handler: app.handler
 ```
+
+<h2 align="center">Source Map Support</h2>
+
+To enable source map support on Lambda make sure you set the environment variable `NODE_OPTIONS` to `--enable-source-maps` for your Lambda.
+
+<h2 align="center">VS Code Debugging</h2>
+
+To debug your Lambda using VS Code add the option `-d 5858` when using `sam local invoke` to launch the Node debugger then switch to the debugger in VS Code. From the VS Code debugger select the Lambda function you want to debug and click run. As of VS Code version 1.51 and SAM CLI version 1.10.0 the debugger will stop at the bootstrap file. Click the continue button and it will go to the first break point.
+
+You should be able to set breakpoints in your source code, step through the code and view values from the editor.
 
 <h2 align="center">Building Multiple Projects (Experimental)</h2>
 
