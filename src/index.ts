@@ -76,7 +76,6 @@ class AwsSamPlugin {
     const defaultRuntime = samConfig.Globals?.Function?.Runtime ?? null;
     const defaultHandler = samConfig.Globals?.Function?.Handler ?? null;
     const defaultCodeUri = samConfig.Globals?.Function?.CodeUri ?? null;
-    const defaultPackageType = samConfig.Globals?.Function?.PackageType ?? null;
 
     // Loop through all of the resources
     for (const resourceKey in samConfig.Resources) {
@@ -88,12 +87,11 @@ class AwsSamPlugin {
         if (!properties) {
           throw new Error(`${resourceKey} is missing Properties`);
         }
+
         // Check the runtime is supported
-        if ((properties.PackageType ?? defaultPackageType) === null) {
           if (!["nodejs10.x", "nodejs12.x"].includes(properties.Runtime ?? defaultRuntime)) {
             throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x or nodejs12.x`);
           }
-        }
 
         // Continue with a warning if they're using inline code
         if (properties.InlineCode) {

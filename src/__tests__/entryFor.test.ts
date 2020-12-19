@@ -1,63 +1,6 @@
 import SamPlugin from "../index";
 
-describe("Function Runtime", () => {
-  test("must be set if there is no PackageType", () => {
-    const plugin = new SamPlugin();
-    const template = `
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-
-Resources:
-  MyLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/my-lambda
-      Handler: app.handler
-`;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
-    );
-  });
-
-  test("is not required if there is a PackageType set Globally", () => {
-    const plugin = new SamPlugin();
-    const template = `
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-
-Globals:
-  Function:
-    PackageType: image
-
-Resources:
-  MyLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/my-lambda
-      Handler: app.handler
-`;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
-    expect(entries).toMatchSnapshot();
-  });
-
-  test("is not required if there is a PackageType set Globally", () => {
-    const plugin = new SamPlugin();
-    const template = `
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-
-Resources:
-  MyLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      PackageType: image
-      CodeUri: src/my-lambda
-      Handler: app.handler
-`;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
-    expect(entries).toMatchSnapshot();
-  });
-
+  describe("Function Runtime", () => {
   test("can be set globally to nodejs10.x", () => {
     const plugin = new SamPlugin();
     const template = `
