@@ -23,7 +23,7 @@ path.__clearMocks = (): void => {
   mockBasename = {};
   mockDirname = {};
   mockRelative = {};
-}
+};
 
 path.basename = (name: string): string => {
   if (name in mockBasename) {

@@ -1,4 +1,5 @@
 .editorconfig
+.eslintrc.js
 .github
 .gitignore
 __mocks__

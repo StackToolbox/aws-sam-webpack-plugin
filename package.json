@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/graphboss/aws-sam-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/graphboss/aws-sam-webpack-pluginbuggy#readme",
+  "homepage": "https://github.com/graphboss/aws-sam-webpack-plugin#readme",
   "dependencies": {
     "js-yaml": "^3.14.0",
     "yaml-cfn": "^0.2.3"
@@ -33,9 +33,12 @@
     "@types/jest": "^26.0.10",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^12.12.54",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-typescript-prettier": "^4.0.0",
     "jest": "^26.4.2",
+    "prettier": "^2.2.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.2.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.1.2"
   }
 }

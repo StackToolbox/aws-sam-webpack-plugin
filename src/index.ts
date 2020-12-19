@@ -60,7 +60,13 @@ class AwsSamPlugin {
   }
 
   // Returns a webpack entry object based on the SAM template
-  public entryFor(projectKey: string, projectPath: string, projectTemplateName: string, projectTemplate: string, outFile: string): IEntryForResult {
+  public entryFor(
+    projectKey: string,
+    projectPath: string,
+    projectTemplateName: string,
+    projectTemplate: string,
+    outFile: string
+  ): IEntryForResult {
     const entryPoints: IEntryPointMap = {};
     const launchConfigs: any[] = [];
     const samConfigs: SamConfig[] = [];
@@ -70,6 +76,7 @@ class AwsSamPlugin {
     const defaultRuntime = samConfig.Globals?.Function?.Runtime ?? null;
     const defaultHandler = samConfig.Globals?.Function?.Handler ?? null;
     const defaultCodeUri = samConfig.Globals?.Function?.CodeUri ?? null;
+    const defaultPackageType = samConfig.Globals?.Function?.PackageType ?? null;
 
     // Loop through all of the resources
     for (const resourceKey in samConfig.Resources) {
@@ -82,8 +89,10 @@ class AwsSamPlugin {
           throw new Error(`${resourceKey} is missing Properties`);
         }
         // Check the runtime is supported
-        if (!["nodejs10.x", "nodejs12.x"].includes(properties.Runtime ?? defaultRuntime)) {
-          throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x or nodejs12.x`);
+        if ((properties.PackageType ?? defaultPackageType) === null) {
+          if (!["nodejs10.x", "nodejs12.x"].includes(properties.Runtime ?? defaultRuntime)) {
+            throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x or nodejs12.x`);
+          }
         }
 
         // Continue with a warning if they're using inline code
@@ -122,12 +131,13 @@ class AwsSamPlugin {
           request: "attach",
           address: "localhost",
           port: 5858,
-          localRoot: `\${workspaceRoot}/${buildRoot}/${resourceKey}`,
+          localRoot: `\${workspaceFolder}/${buildRoot}/${resourceKey}`,
           remoteRoot: "/var/task",
           protocol: "inspector",
           stopOnEntry: false,
-          outFiles: [`\${workspaceRoot}/${buildRoot}/${resourceKey}/${outFile}.js`],
+          outFiles: [`\${workspaceFolder}/${buildRoot}/${resourceKey}/**/*.js`],
           sourceMaps: true,
+          skipFiles: ["/var/runtime/**/*.js", "<node_internals>/**/*.js"],
         });
 
         // Add the entry point for webpack
@@ -173,7 +183,9 @@ class AwsSamPlugin {
 
       // If we still cannot find a project template name then throw an error because something is wrong
       if (projectTemplateName === null) {
-        throw new Error(`Could not find ${AwsSamPlugin.defaultTemplates.join(" or ")} in ${projectFolderOrTemplateName}`);
+        throw new Error(
+          `Could not find ${AwsSamPlugin.defaultTemplates.join(" or ")} in ${projectFolderOrTemplateName}`
+        );
       }
 
       // Retrieve the entry points, VS Code debugger launch configs and SAM config for this entry

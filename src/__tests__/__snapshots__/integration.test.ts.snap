@@ -49,14 +49,18 @@ Resources:
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/.aws-sam/build/MyLambda/index.js\\"
+        \\"\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",
@@ -91,14 +95,18 @@ Resources:
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",
@@ -133,14 +141,18 @@ Resources:
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",
@@ -175,14 +187,18 @@ Resources:
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",
@@ -206,14 +222,18 @@ Object {
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/project-a/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/project-a/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     },
     {
       \\"name\\": \\"b:MyLambda\\",
@@ -221,14 +241,18 @@ Object {
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/project-b/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/project-b/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",
@@ -276,14 +300,18 @@ Object {
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/project-a/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/project-a/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/project-a/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     },
     {
       \\"name\\": \\"b:MyLambda\\",
@@ -291,14 +319,18 @@ Object {
       \\"request\\": \\"attach\\",
       \\"address\\": \\"localhost\\",
       \\"port\\": 5858,
-      \\"localRoot\\": \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda\\",
+      \\"localRoot\\": \\"\${workspaceFolder}/project-b/.aws-sam/build/MyLambda\\",
       \\"remoteRoot\\": \\"/var/task\\",
       \\"protocol\\": \\"inspector\\",
       \\"stopOnEntry\\": false,
       \\"outFiles\\": [
-        \\"\${workspaceRoot}/project-b/.aws-sam/build/MyLambda/app.js\\"
+        \\"\${workspaceFolder}/project-b/.aws-sam/build/MyLambda/**/*.js\\"
       ],
-      \\"sourceMaps\\": true
+      \\"sourceMaps\\": true,
+      \\"skipFiles\\": [
+        \\"/var/runtime/**/*.js\\",
+        \\"<node_internals>/**/*.js\\"
+      ]
     }
   ]
 }",

@@ -8,15 +8,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -56,15 +60,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -109,15 +117,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -162,15 +174,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -210,15 +226,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -263,15 +283,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -316,15 +340,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -364,15 +392,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -412,15 +444,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -465,15 +501,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -517,15 +557,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -561,6 +605,114 @@ Object {
 }
 `;
 
+exports[`Function Runtime is not required if there is a PackageType set Globally 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "PackageType": "image",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
+exports[`Function Runtime is not required if there is a PackageType set Globally 2`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "PackageType": "image",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`It ignores non AWS::Serverless::Function resosurces 1`] = `
 Object {
   "entryPoints": Object {
@@ -569,15 +721,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -620,15 +776,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
       "name": "MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/.aws-sam/build/MyLambda/index.js",
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",
@@ -672,15 +832,19 @@ Object {
   "launchConfigs": Array [
     Object {
       "address": "localhost",
-      "localRoot": "\${workspaceRoot}/xxx/.aws-sam/build/MyLambda",
+      "localRoot": "\${workspaceFolder}/xxx/.aws-sam/build/MyLambda",
       "name": "xxx:MyLambda",
       "outFiles": Array [
-        "\${workspaceRoot}/xxx/.aws-sam/build/MyLambda/app.js",
+        "\${workspaceFolder}/xxx/.aws-sam/build/MyLambda/**/*.js",
       ],
       "port": 5858,
       "protocol": "inspector",
       "remoteRoot": "/var/task",
       "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
       "sourceMaps": true,
       "stopOnEntry": false,
       "type": "node",

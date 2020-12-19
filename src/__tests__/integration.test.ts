@@ -184,7 +184,7 @@ test("Happy path with VS Code debugging disabled", () => {
   // Does not create a .vscode folder
   // @ts-ignore
   expect(fs.__getMockMakedirs().includes(".vscode")).toBeFalsy();
-  
+
   // @ts-ignore
   expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
 });
@@ -365,7 +365,6 @@ test("Fails when there is no template.yaml or template.yml and you provided a di
 
   expect(() => plugin.entry()).toThrowError("Could not find template.yaml or template.yml in .");
 });
-
 
 test("Happy path with an output file specified", () => {
   const plugin = new SamPlugin({ outFile: "index" });
