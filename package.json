@@ -30,12 +30,12 @@
     "yaml-cfn": "^0.2.3"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.10",
+    "@types/jest": "^26.0.20",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^12.12.54",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-typescript-prettier": "^4.0.0",
-    "jest": "^26.4.2",
+    "jest": "^26.6.3",
     "prettier": "^2.2.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.2.0",
