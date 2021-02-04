@@ -43,6 +43,27 @@ Resources:
     expect(entries).toMatchSnapshot();
   });
 
+  test("can be set globally to nodejs14.x", () => {
+    const plugin = new SamPlugin();
+    const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs14.x
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+`;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries).toMatchSnapshot();
+  });
+
   test("can be set at the function to nodejs10.x", () => {
     const plugin = new SamPlugin();
     const template = `
@@ -79,6 +100,24 @@ Resources:
     expect(entries).toMatchSnapshot();
   });
 
+  test("can be set at the function to nodejs14.x", () => {
+    const plugin = new SamPlugin();
+    const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+      Runtime: nodejs14.x
+`;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries).toMatchSnapshot();
+  });
+
   test("must be set globally or at the function", () => {
     const plugin = new SamPlugin();
     const template = `
@@ -93,7 +132,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
 
@@ -115,7 +154,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
 
@@ -134,7 +173,7 @@ Resources:
       Runtime: nodejs8.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x or nodejs12.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
 
@@ -177,7 +216,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/my-lambda
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -195,7 +234,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -217,7 +256,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -234,7 +273,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/my-lambda
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a Handler"
@@ -258,7 +297,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -276,7 +315,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -298,7 +337,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -315,7 +354,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a CodeUri"
@@ -349,7 +388,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: apphandler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
   expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
     'MyLambda Handler must contain exactly one "."'
@@ -368,7 +407,7 @@ Resources:
     Properties:
       InlineCode: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
   const originalLog = console.log;
   console.log = jest.fn();
@@ -389,7 +428,7 @@ describe("Launch config name", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -411,7 +450,7 @@ describe("Launch config name", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -435,7 +474,7 @@ describe("SAM config entryPointName:", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -457,7 +496,7 @@ describe("SAM config entryPointName:", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -481,7 +520,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -503,7 +542,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -524,7 +563,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -545,7 +584,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -566,7 +605,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
   
   Resources:
     MyLambda:
@@ -592,7 +631,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs10.x
+      Runtime: nodejs14.x
 
   FakeResource:
     Type: AWS::FakeResource::NahNah
@@ -609,7 +648,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs12.x
+    Runtime: nodejs14.x
 
 Resources:
   MyLambda:
