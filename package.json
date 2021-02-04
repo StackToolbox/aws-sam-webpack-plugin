@@ -27,7 +27,7 @@
   "homepage": "https://github.com/graphboss/aws-sam-webpack-plugin#readme",
   "dependencies": {
     "js-yaml": "^4.0.0",
-    "yaml-cfn": "^0.2.3"
+    "yaml-cfn": "^0.3.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
