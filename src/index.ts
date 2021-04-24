@@ -220,7 +220,7 @@ class AwsSamPlugin {
     compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
-          fs.writeFileSync(`${samConfig.buildRoot}/${samConfig.templateName}`, yamlDump(samConfig.samConfig));
+          fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
         }
         if (this.options.vscodeDebug !== false) {
           if (!fs.existsSync(".vscode")) {
