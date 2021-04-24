@@ -81,6 +81,73 @@ class AwsSamPlugin {
     for (const resourceKey in samConfig.Resources) {
       const resource = samConfig.Resources[resourceKey];
 
+      const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;
+
+      // Correct paths for files that can be uploaded using "aws couldformation package"
+      if (resource.Type === "AWS::ApiGateway::RestApi" && resource.Properties.BodyS3Location) {
+        samConfig.Resources[resourceKey].Properties.BodyS3Location = path.relative(
+          buildRoot,
+          resource.Properties.BodyS3Location
+        );
+      }
+      if (resource.Type === "AWS::Lambda::Function" && resource.Properties.Code) {
+        samConfig.Resources[resourceKey].Properties.Code = path.relative(buildRoot, resource.Properties.Code);
+      }
+      if (resource.Type === "AWS::AppSync::GraphQLSchema" && resource.Properties.DefinitionS3Location) {
+        samConfig.Resources[resourceKey].Properties.DefinitionS3Location = path.relative(
+          buildRoot,
+          resource.Properties.DefinitionS3Location
+        );
+      }
+      if (resource.Type === "AWS::AppSync::Resolver" && resource.Properties.RequestMappingTemplateS3Location) {
+        samConfig.Resources[resourceKey].Properties.RequestMappingTemplateS3Location = path.relative(
+          buildRoot,
+          resource.Properties.RequestMappingTemplateS3Location
+        );
+      }
+      if (resource.Type === "AWS::AppSync::Resolver" && resource.Properties.ResponseMappingTemplateS3Location) {
+        samConfig.Resources[resourceKey].Properties.ResponseMappingTemplateS3Location = path.relative(
+          buildRoot,
+          resource.Properties.ResponseMappingTemplateS3Location
+        );
+      }
+      if (resource.Type === "AWS::Serverless::Api" && resource.Properties.DefinitionUri) {
+        samConfig.Resources[resourceKey].Properties.DefinitionUri = path.relative(
+          buildRoot,
+          resource.Properties.DefinitionUri
+        );
+      }
+      if (resource.Type === "AWS::Include" && resource.Properties.Location) {
+        samConfig.Resources[resourceKey].Properties.Location = path.relative(buildRoot, resource.Properties.Location);
+      }
+      if (resource.Type === "AWS::ElasticBeanstalk::ApplicationVersion" && resource.Properties.SourceBundle) {
+        samConfig.Resources[resourceKey].Properties.SourceBundle = path.relative(
+          buildRoot,
+          resource.Properties.SourceBundle
+        );
+      }
+      if (resource.Type === "AWS::CloudFormation::Stack" && resource.Properties.TemplateURL) {
+        samConfig.Resources[resourceKey].Properties.TemplateURL = path.relative(
+          buildRoot,
+          resource.Properties.TemplateURL
+        );
+      }
+      if (
+        resource.Type === "AWS::Glue::Job" &&
+        resource.Properties.Command &&
+        resource.Properties.Command.ScriptLocation
+      ) {
+        samConfig.Resources[resourceKey].Properties.Command.ScriptLocation = path.relative(
+          buildRoot,
+          resource.Properties.Command.ScriptLocation
+        );
+      }
+      if (resource.Type === "AWS::StepFunctions::StateMachine" && resource.Properties.DefinitionS3Location) {
+        samConfig.Resources[resourceKey].Properties.DefinitionS3Location = path.relative(
+          buildRoot,
+          resource.Properties.DefinitionS3Location
+        );
+      }
       // Find all of the functions
       if (resource.Type === "AWS::Serverless::Function") {
         const properties = resource.Properties;
@@ -89,9 +156,9 @@ class AwsSamPlugin {
         }
 
         // Check the runtime is supported
-          if (!["nodejs10.x", "nodejs12.x", "nodejs14.x"].includes(properties.Runtime ?? defaultRuntime)) {
-            throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x`);
-          }
+        if (!["nodejs10.x", "nodejs12.x", "nodejs14.x"].includes(properties.Runtime ?? defaultRuntime)) {
+          throw new Error(`${resourceKey} has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x`);
+        }
 
         // Continue with a warning if they're using inline code
         if (properties.InlineCode) {
@@ -121,7 +188,6 @@ class AwsSamPlugin {
         const basePath = `${basePathPrefix}/${codeUri}`;
         const fileBase = `${basePath}/${handlerComponents[0]}`;
 
-        const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;
         // Generate the launch config for the VS Code debugger
         launchConfigs.push({
           name: projectKey === "default" ? resourceKey : `${projectKey}:${resourceKey}`,

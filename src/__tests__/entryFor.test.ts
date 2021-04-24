@@ -1,6 +1,7 @@
+import { assert } from "node:console";
 import SamPlugin from "../index";
 
-  describe("Function Runtime", () => {
+describe("Function Runtime", () => {
   test("can be set globally to nodejs10.x", () => {
     const plugin = new SamPlugin();
     const template = `
@@ -659,4 +660,295 @@ Resources:
 `;
   const entries = plugin.entryFor("default", "", "template.yaml", template, "index");
   expect(entries).toMatchSnapshot();
+});
+
+describe("Property paths are rewritten correctly", () => {
+  test("BodyS3Location property for the AWS::ApiGateway::RestApi resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        BodyS3Location: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.BodyS3Location).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("Code property for the AWS::Lambda::Function resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::Lambda::Function
+      Properties:
+        Code: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Code).toEqual("../../path/to/file");
+  });
+
+  test("DefinitionS3Location property for the AWS::AppSync::GraphQLSchema resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::AppSync::GraphQLSchema
+      Properties:
+        DefinitionS3Location: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("RequestMappingTemplateS3Location property for the AWS::AppSync::Resolver resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::AppSync::Resolver
+      Properties:
+        RequestMappingTemplateS3Location: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(
+      entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.RequestMappingTemplateS3Location
+    ).toEqual("../../path/to/file");
+  });
+
+  test("ResponseMappingTemplateS3Location property for the AWS::AppSync::Resolver resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::AppSync::Resolver
+      Properties:
+        ResponseMappingTemplateS3Location: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(
+      entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.ResponseMappingTemplateS3Location
+    ).toEqual("../../path/to/file");
+  });
+
+  test("DefinitionUri property for the AWS::Serverless::Api resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::Serverless::Api
+      Properties:
+        DefinitionUri: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionUri).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("Location parameter for the AWS::Include transform", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::Include
+      Properties:
+        Location: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Location).toEqual("../../path/to/file");
+  });
+
+  test("SourceBundle property for the AWS::ElasticBeanstalk::ApplicationVersion resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::ElasticBeanstalk::ApplicationVersion
+      Properties:
+        SourceBundle: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.SourceBundle).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("TemplateURL property for the AWS::CloudFormation::Stack resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::CloudFormation::Stack
+      Properties:
+        TemplateURL: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.TemplateURL).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("Command.ScriptLocation property for the AWS::Glue::Job resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+  AWSTemplateFormatVersion: "2010-09-09"
+  Transform: AWS::Serverless-2016-10-31
+
+  Resources:
+    MyLambda:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: src/my-lambda
+        Handler: app.handler
+        Runtime: nodejs14.x
+
+    MyResource:
+      Type: AWS::Glue::Job
+      Properties:
+        Command:
+          ScriptLocation: path/to/file
+  `;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Command?.ScriptLocation).toEqual(
+      "../../path/to/file"
+    );
+  });
+
+  test("DefinitionS3Location property for the AWS::StepFunctions::StateMachine resource", () => {
+    const plugin = new SamPlugin();
+    const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+      Runtime: nodejs14.x
+
+  MyResource:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      DefinitionS3Location: path/to/file
+`;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual(
+      "../../path/to/file"
+    );
+  });
+});
+
+test("can be set at the function", () => {
+  const plugin = new SamPlugin();
+  const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+      Runtime: nodejs14.x
+`;
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
 });
