@@ -84,49 +84,77 @@ class AwsSamPlugin {
       const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;
 
       // Correct paths for files that can be uploaded using "aws couldformation package"
-      if (resource.Type === "AWS::ApiGateway::RestApi" && resource.Properties.BodyS3Location) {
+      if (resource.Type === "AWS::ApiGateway::RestApi" && typeof resource.Properties.BodyS3Location === "string") {
         samConfig.Resources[resourceKey].Properties.BodyS3Location = path.relative(
           buildRoot,
           resource.Properties.BodyS3Location
         );
       }
-      if (resource.Type === "AWS::Lambda::Function" && resource.Properties.Code) {
+      if (resource.Type === "AWS::Lambda::Function" && typeof resource.Properties.Code === "string") {
         samConfig.Resources[resourceKey].Properties.Code = path.relative(buildRoot, resource.Properties.Code);
       }
-      if (resource.Type === "AWS::AppSync::GraphQLSchema" && resource.Properties.DefinitionS3Location) {
+      if (
+        resource.Type === "AWS::AppSync::GraphQLSchema" &&
+        typeof resource.Properties.DefinitionS3Location === "string" &&
+        resource.Properties.DefinitionS3Location.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.DefinitionS3Location = path.relative(
           buildRoot,
           resource.Properties.DefinitionS3Location
         );
       }
-      if (resource.Type === "AWS::AppSync::Resolver" && resource.Properties.RequestMappingTemplateS3Location) {
+      if (
+        resource.Type === "AWS::AppSync::Resolver" &&
+        typeof resource.Properties.RequestMappingTemplateS3Location === "string" &&
+        resource.Properties.RequestMappingTemplateS3Location.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.RequestMappingTemplateS3Location = path.relative(
           buildRoot,
           resource.Properties.RequestMappingTemplateS3Location
         );
       }
-      if (resource.Type === "AWS::AppSync::Resolver" && resource.Properties.ResponseMappingTemplateS3Location) {
+      if (
+        resource.Type === "AWS::AppSync::Resolver" &&
+        typeof resource.Properties.ResponseMappingTemplateS3Location === "string" &&
+        resource.Properties.ResponseMappingTemplateS3Location.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.ResponseMappingTemplateS3Location = path.relative(
           buildRoot,
           resource.Properties.ResponseMappingTemplateS3Location
         );
       }
-      if (resource.Type === "AWS::Serverless::Api" && resource.Properties.DefinitionUri) {
+      if (
+        resource.Type === "AWS::Serverless::Api" &&
+        typeof resource.Properties.DefinitionUri === "string" &&
+        resource.Properties.DefinitionUri.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.DefinitionUri = path.relative(
           buildRoot,
           resource.Properties.DefinitionUri
         );
       }
-      if (resource.Type === "AWS::Include" && resource.Properties.Location) {
+      if (
+        resource.Type === "AWS::Include" &&
+        typeof resource.Properties.Location === "string" &&
+        resource.Properties.Location.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.Location = path.relative(buildRoot, resource.Properties.Location);
       }
-      if (resource.Type === "AWS::ElasticBeanstalk::ApplicationVersion" && resource.Properties.SourceBundle) {
+      if (
+        resource.Type === "AWS::ElasticBeanstalk::ApplicationVersion" &&
+        typeof resource.Properties.SourceBundle === "string" &&
+        resource.Properties.SourceBundle.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.SourceBundle = path.relative(
           buildRoot,
           resource.Properties.SourceBundle
         );
       }
-      if (resource.Type === "AWS::CloudFormation::Stack" && resource.Properties.TemplateURL) {
+      if (
+        resource.Type === "AWS::CloudFormation::Stack" &&
+        typeof resource.Properties.TemplateURL === "string" &&
+        resource.Properties.TemplateURL.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.TemplateURL = path.relative(
           buildRoot,
           resource.Properties.TemplateURL
@@ -135,14 +163,19 @@ class AwsSamPlugin {
       if (
         resource.Type === "AWS::Glue::Job" &&
         resource.Properties.Command &&
-        resource.Properties.Command.ScriptLocation
+        typeof resource.Properties.Command.ScriptLocation === "string" &&
+        resource.Properties.Command.ScriptLocation.startsWith("s3://") === false
       ) {
         samConfig.Resources[resourceKey].Properties.Command.ScriptLocation = path.relative(
           buildRoot,
           resource.Properties.Command.ScriptLocation
         );
       }
-      if (resource.Type === "AWS::StepFunctions::StateMachine" && resource.Properties.DefinitionS3Location) {
+      if (
+        resource.Type === "AWS::StepFunctions::StateMachine" &&
+        typeof resource.Properties.DefinitionS3Location === "string" &&
+        resource.Properties.DefinitionS3Location.startsWith("s3://") === false
+      ) {
         samConfig.Resources[resourceKey].Properties.DefinitionS3Location = path.relative(
           buildRoot,
           resource.Properties.DefinitionS3Location
