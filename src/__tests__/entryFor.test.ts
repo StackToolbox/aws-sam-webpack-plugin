@@ -1,4 +1,3 @@
-import { assert } from "node:console";
 import SamPlugin from "../index";
 
 describe("Function Runtime", () => {
