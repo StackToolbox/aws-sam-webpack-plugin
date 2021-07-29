@@ -121,12 +121,13 @@ Example:
   "compilerOptions": {
     "target": "es2015",
     "module": "commonjs",
-    "allowJs": true,
-    "checkJs": true,
     "sourceMap": true,
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.js"]
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
 }
 ```
 
