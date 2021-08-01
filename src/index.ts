@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import { yamlParse, yamlDump } from "yaml-cfn";
+import { schema } from "yaml-cfn";
+import yaml from "js-yaml";
 
 interface AwsSamProjectMap {
   [pname: string]: string;
@@ -71,7 +72,7 @@ class AwsSamPlugin {
     const launchConfigs: any[] = [];
     const samConfigs: SamConfig[] = [];
 
-    const samConfig = yamlParse(projectTemplate);
+    const samConfig = yaml.load(projectTemplate, { filename: projectTemplateName, schema }) as any;
 
     const defaultRuntime = samConfig.Globals?.Function?.Runtime ?? null;
     const defaultHandler = samConfig.Globals?.Function?.Handler ?? null;
@@ -319,7 +320,10 @@ class AwsSamPlugin {
     compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
       if (this.samConfigs && this.launchConfig) {
         for (const samConfig of this.samConfigs) {
-          fs.writeFileSync(`${samConfig.buildRoot}/template.yaml`, yamlDump(samConfig.samConfig));
+          fs.writeFileSync(
+            `${samConfig.buildRoot}/template.yaml`,
+            yaml.dump(samConfig.samConfig, { indent: 2, quotingType: '"', schema })
+          );
         }
         if (this.options.vscodeDebug !== false) {
           if (!fs.existsSync(".vscode")) {
