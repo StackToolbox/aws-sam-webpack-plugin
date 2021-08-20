@@ -34,13 +34,13 @@ Create a `package.json` in your projects root folder using `npm init` or `yarn i
 Install the development dependencies:
 
 ```bash
-npm install webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda --save-dev
+npm install webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda rimraf --save-dev
 ```
 
 or
 
 ```bash
-yarn add webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda -D
+yarn add webpack webpack-cli typescript ts-loader aws-sam-webpack-plugin @types/aws-lambda rimraf -D
 ```
 
 Install the production dependencies:
