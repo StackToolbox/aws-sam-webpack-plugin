@@ -46,4 +46,8 @@ path.relative = (folder: string, name: string): string => {
   throw new Error(`Unknown relative ${folder}, ${name}`);
 };
 
+path.resolve = (folder: string): string => {
+  return process.cwd() + "/" + folder;
+};
+
 module.exports = path;

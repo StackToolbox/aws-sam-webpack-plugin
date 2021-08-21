@@ -1,7 +1,9 @@
 import SamPlugin from "../index";
 import fs from "fs";
 import path from "path";
+import child_process from "child_process";
 
+jest.mock("child_process");
 jest.mock("fs");
 jest.mock("path");
 
@@ -19,6 +21,44 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
+`;
+const samTemplateWithLayer = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+  LayerSharp:
+    Type: AWS::Serverless::LayerVersion
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      LayerName: layer-sharp
+      Description: Package sharp
+      ContentUri: layers/sharp
+      CompatibleRuntimes:
+        - nodejs14.x
+      RetentionPolicy: Retain
+  LayerSharp2:
+    Type: AWS::Serverless::LayerVersion
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      LayerName: layer-sharp2
+      Description: Package sharp2
+      ContentUri: layers/sharp2
+      CompatibleRuntimes:
+        - nodejs14.x
+      RetentionPolicy: Retain
+
 `;
 
 test("Happy path with default constructor works", () => {
@@ -50,6 +90,7 @@ test("Happy path with default constructor works", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -89,6 +130,7 @@ test("Happy path with empty options in the constructor works", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -132,6 +174,7 @@ test("Happy path with empty options in the constructor works and an existing .vs
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -175,6 +218,7 @@ test("Happy path with VS Code debugging disabled", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -218,6 +262,7 @@ test("Happy path with multiple projects works", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -260,6 +305,7 @@ test("Happy path with multiple projects and different template names works", () 
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -286,6 +332,7 @@ test("Calling apply() before entry() throws an error", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -395,6 +442,7 @@ test("Happy path with an output file specified", () => {
         tap: (n: string, f: (_compilation: any) => void) => {
           afterEmit = f;
         },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {},
       },
     },
   });
@@ -403,4 +451,52 @@ test("Happy path with an output file specified", () => {
 
   // @ts-ignore
   expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
+});
+
+test("Happy exec make template with layers", async () => {
+  const plugin = new SamPlugin({ outFile: "index" });
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplateWithLayer });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  // let afterEmit: (_compilation: any) => void;
+  let afterEmitPromise: (_compilation: any) => Promise<void>;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          // afterEmit = f;
+        },
+        tapPromise: async (n: string, f: (_compilation: any) => Promise<void>) => {
+          afterEmitPromise = f;
+        },
+      },
+    },
+  });
+
+  const execMocked = child_process.exec as unknown as jest.Mock;
+  execMocked.mockClear();
+  // @ts-ignore
+  await afterEmitPromise(null);
+
+  expect(execMocked.mock.calls.length).toBe(2);
+  expect(execMocked.mock.calls[0][0]).toMatch(
+    /make -C ".\/layers\/sharp" ARTIFACTS_DIR="[^"]+\/\.aws-sam\/build\/LayerSharp" build-LayerSharp/
+  );
 });
