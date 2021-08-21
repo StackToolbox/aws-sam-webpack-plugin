@@ -189,6 +189,165 @@ test("Happy path with VS Code debugging disabled", () => {
   expect({ entryPoints, files: fs.__getMockWrittenFiles() }).toMatchSnapshot();
 });
 
+const vscodeLaunchJson1 = `{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CustomLambda",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/CustomLambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/CustomLambda/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
+}`;
+const vscodeLaunchJson2 = `{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CustomLambda",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/CustomLambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/CustomLambda/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    },
+    // BEGIN AwsSamPlugin
+    {
+      "name": "OldLambda",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/OldLambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/OldLambda/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+    // END AwsSamPlugin
+  ]
+}`;
+const vscodeLaunchJsonTest = `{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CustomLambda",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/CustomLambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/CustomLambda/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    },
+    // BEGIN AwsSamPlugin
+    {
+      "name": "MyLambda",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+    // END AwsSamPlugin
+  ]
+}`;
+
+test.each([
+  [vscodeLaunchJson1, vscodeLaunchJsonTest],
+  [vscodeLaunchJson2, vscodeLaunchJsonTest],
+])("Happy build launch.json with replace old content", (srcData, testData) => {
+  const plugin = new SamPlugin({ vscodeDebug: true });
+
+  // @ts-ignore
+  fs.__clearMocks();
+  // @ts-ignore
+  fs.__setMockDirs(["."]);
+  // @ts-ignore
+  fs.__setMockFiles({ "./template.yaml": samTemplate, ".vscode/launch.json": srcData });
+
+  // @ts-ignore
+  path.__clearMocks();
+  // @ts-ignore
+  path.__setMockBasenames({ "./template.yaml": "template.yaml" });
+  // @ts-ignore
+  path.__setMockDirnames({ "./template.yaml": "." });
+  // @ts-ignore
+  path.__setMockRelatives({ ".#.": "" });
+
+  const entryPoints = plugin.entry();
+
+  let afterEmit: (_compilation: any) => void;
+
+  plugin.apply({
+    hooks: {
+      afterEmit: {
+        tap: (n: string, f: (_compilation: any) => void) => {
+          afterEmit = f;
+        },
+      },
+    },
+  });
+  // @ts-ignore
+  afterEmit(null);
+
+  // @ts-ignore
+  const vscodeLaunchJsonContent = fs.__getMockWrittenFiles()[".vscode/launch.json"];
+
+  expect(vscodeLaunchJsonContent).toEqual(testData);
+});
+
 test("Happy path with multiple projects works", () => {
   const plugin = new SamPlugin({ projects: { a: "project-a", b: "project-b" } });
 

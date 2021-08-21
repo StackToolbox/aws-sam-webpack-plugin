@@ -43,6 +43,7 @@ Resources:
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"MyLambda\\",
       \\"type\\": \\"node\\",
@@ -62,6 +63,7 @@ Resources:
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
   },
@@ -89,6 +91,7 @@ Resources:
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"MyLambda\\",
       \\"type\\": \\"node\\",
@@ -108,6 +111,7 @@ Resources:
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
   },
@@ -135,6 +139,7 @@ Resources:
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"MyLambda\\",
       \\"type\\": \\"node\\",
@@ -154,6 +159,7 @@ Resources:
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
   },
@@ -181,6 +187,7 @@ Resources:
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"MyLambda\\",
       \\"type\\": \\"node\\",
@@ -200,6 +207,7 @@ Resources:
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
   },
@@ -216,6 +224,7 @@ Object {
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"a:MyLambda\\",
       \\"type\\": \\"node\\",
@@ -254,6 +263,7 @@ Object {
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
     "project-a/.aws-sam/build/template.yaml": "AWSTemplateFormatVersion: 2010-09-09
@@ -294,6 +304,7 @@ Object {
     ".vscode/launch.json": "{
   \\"version\\": \\"0.2.0\\",
   \\"configurations\\": [
+    // BEGIN AwsSamPlugin
     {
       \\"name\\": \\"a:MyLambda\\",
       \\"type\\": \\"node\\",
@@ -332,6 +343,7 @@ Object {
         \\"<node_internals>/**/*.js\\"
       ]
     }
+    // END AwsSamPlugin
   ]
 }",
     "project-a/.aws-sam/build/template.yaml": "AWSTemplateFormatVersion: 2010-09-09
