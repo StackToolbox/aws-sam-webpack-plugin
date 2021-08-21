@@ -11,7 +11,7 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs10.x` or `nodejs12.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs10.x`, `nodejs12.x` or `nodejs14.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
 
 I started this project for two reasons:
 
@@ -78,7 +78,7 @@ module.exports = {
   output: {
     filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: path.resolve(".")
+    path: path.resolve("."),
   },
 
   // Create source maps
@@ -86,7 +86,7 @@ module.exports = {
 
   // Resolve .ts and .js extensions
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
   },
 
   // Target node
@@ -102,11 +102,11 @@ module.exports = {
 
   // Add the TypeScript loader
   module: {
-    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }]
+    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }],
   },
 
   // Add the AWS SAM Webpack plugin
-  plugins: [awsSamPlugin]
+  plugins: [awsSamPlugin],
 };
 ```
 
@@ -222,7 +222,7 @@ module.exports = {
   output: {
     filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: path.resolve(".")
+    path: path.resolve("."),
   },
 
   // Create source maps
@@ -230,7 +230,7 @@ module.exports = {
 
   // Resolve .ts and .js extensions
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
   },
 
   // Target node
@@ -248,12 +248,12 @@ module.exports = {
   module: {
     rules: [
       { test: /\.jsx?$/, loader: "babel-loader" },
-      { test: /\.tsx?$/, loader: "babel-loader" }
-    ]
+      { test: /\.tsx?$/, loader: "babel-loader" },
+    ],
   },
 
   // Add the AWS SAM Webpack plugin
-  plugins: [awsSamPlugin]
+  plugins: [awsSamPlugin],
 };
 ```
 
@@ -268,11 +268,11 @@ module.exports = {
     [
       "@babel/plugin-transform-runtime",
       {
-        regenerator: true
-      }
-    ]
+        regenerator: true,
+      },
+    ],
   ],
-  presets: ["@babel/env", "@babel/typescript"]
+  presets: ["@babel/env", "@babel/typescript"],
 };
 ```
 
@@ -339,8 +339,8 @@ For example: The following will build two projects, `projectA` and `projectB`. F
 const awsSamPlugin = new AwsSamPlugin({
   projects: {
     projectA: "./services/project-a",
-    projectB: "./services/project-b/project.yaml"
-  }
+    projectB: "./services/project-b/project.yaml",
+  },
 });
 ```
 
@@ -351,8 +351,8 @@ module.exports = {
   output: {
     filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: path.resolve(".")
-  }
+    path: path.resolve("."),
+  },
 };
 ```
 
