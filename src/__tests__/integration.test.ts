@@ -25,11 +25,9 @@ Resources:
 const samTemplateWithLayer = `
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-
 Globals:
   Function:
     Runtime: nodejs10.x
-
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -54,11 +52,10 @@ Resources:
     Properties:
       LayerName: layer-sharp2
       Description: Package sharp2
-      ContentUri: layers/sharp2
+      ContentUri: ./layers/sharp2
       CompatibleRuntimes:
         - nodejs14.x
       RetentionPolicy: Retain
-
 `;
 
 test("Happy path with default constructor works", () => {
@@ -498,5 +495,8 @@ test("Happy exec make template with layers", async () => {
   expect(execMocked.mock.calls.length).toBe(2);
   expect(execMocked.mock.calls[0][0]).toMatch(
     /make -C ".\/layers\/sharp" ARTIFACTS_DIR="[^"]+\/\.aws-sam\/build\/LayerSharp" build-LayerSharp/
+  );
+  expect(execMocked.mock.calls[1][0]).toMatch(
+    /make -C ".\/layers\/sharp2" ARTIFACTS_DIR="[^"]+\/\.aws-sam\/build\/LayerSharp2" build-LayerSharp2/
   );
 });

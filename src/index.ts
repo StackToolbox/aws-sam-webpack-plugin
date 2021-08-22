@@ -275,8 +275,8 @@ class AwsSamPlugin {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
 
-        const basePathPrefix = projectPath === "" ? "." : `./${projectPath}`;
-        const contentDir = `${basePathPrefix}/${contentUri}`;
+        const basePathPrefix = ["", "."].includes(projectPath) ? "." : `./${projectPath}`;
+        const contentDir = `${basePathPrefix}/${contentUri}`.replace(/^(\.\/)+/, "./");
 
         const buildMethod = resource.Metadata?.BuildMethod;
         if (buildMethod === "makefile") {
