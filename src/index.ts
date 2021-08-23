@@ -270,10 +270,11 @@ class AwsSamPlugin {
         }
 
         // Check we have a CodeUri
-        const contentUri = properties.ContentUri ?? defaultCodeUri;
+        const contentUri = properties.ContentUri;
         if (!contentUri) {
           throw new Error(`${resourceKey} is missing a CodeUri`);
         }
+        properties.ContentUri = resourceKey;
 
         const basePathPrefix = ["", "."].includes(projectPath) ? "." : `./${projectPath}`;
         const contentDir = `${basePathPrefix}/${contentUri}`.replace(/^(\.\/)+/, "./");
