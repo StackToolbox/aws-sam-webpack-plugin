@@ -318,21 +318,24 @@ class AwsSamPlugin {
 
   public apply(compiler: any) {
     compiler.hooks.afterEmit.tap("SamPlugin", (_compilation: any) => {
-      if (this.samConfigs && this.launchConfig) {
-        for (const samConfig of this.samConfigs) {
-          fs.writeFileSync(
-            `${samConfig.buildRoot}/template.yaml`,
-            yaml.dump(samConfig.samConfig, { indent: 2, quotingType: '"', schema })
-          );
-        }
-        if (this.options.vscodeDebug !== false) {
-          if (!fs.existsSync(".vscode")) {
-            fs.mkdirSync(".vscode");
-          }
-          fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig, null, 2));
-        }
-      } else {
+      if (!(this.samConfigs && this.launchConfig)) {
         throw new Error("It looks like AwsSamPlugin.entry() was not called");
+      }
+      const yamlUnique = this.samConfigs.reduce((a, e) => {
+        const { buildRoot, samConfig } = e;
+        a[buildRoot] = samConfig;
+        return a;
+      }, {} as Record<string, any>);
+      for (const buildRoot in yamlUnique) {
+        const samConfig = yamlUnique[buildRoot];
+        fs.writeFileSync(`${buildRoot}/template.yaml`, yaml.dump(samConfig, { indent: 2, quotingType: '"', schema }));
+      }
+
+      if (this.options.vscodeDebug !== false) {
+        if (!fs.existsSync(".vscode")) {
+          fs.mkdirSync(".vscode");
+        }
+        fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig, null, 2));
       }
     });
   }
