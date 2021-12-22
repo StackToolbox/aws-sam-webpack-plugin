@@ -26,10 +26,16 @@ interface SamConfig {
   templateName: string;
 }
 
+interface NestedApplicationConfig {
+  buildRoot: string;
+  samConfig: any;
+}
+
 interface IEntryForResult {
   entryPoints: IEntryPointMap;
   launchConfigs: any[];
   samConfigs: SamConfig[];
+  applicationConfigs: NestedApplicationConfig[];
 }
 
 class AwsSamPlugin {
@@ -37,6 +43,7 @@ class AwsSamPlugin {
   private launchConfig: any;
   private options: AwsSamPluginOptions;
   private samConfigs: SamConfig[];
+  private applicationConfigs: NestedApplicationConfig[];
 
   constructor(options?: Partial<AwsSamPluginOptions>) {
     this.options = {
@@ -46,6 +53,7 @@ class AwsSamPlugin {
       ...options,
     };
     this.samConfigs = [];
+    this.applicationConfigs = [];
   }
 
   // Returns the name of the SAM template file or null if it's not found
@@ -66,11 +74,14 @@ class AwsSamPlugin {
     projectPath: string,
     projectTemplateName: string,
     projectTemplate: string,
-    outFile: string
+    outFile: string,
+    nestedApplicationName: string|null
   ): IEntryForResult {
     const entryPoints: IEntryPointMap = {};
     const launchConfigs: any[] = [];
     const samConfigs: SamConfig[] = [];
+    const applicationConfigs: NestedApplicationConfig[] = [];
+    const nestedResults: IEntryForResult[] = [];
 
     const samConfig = yaml.load(projectTemplate, { filename: projectTemplateName, schema }) as any;
 
@@ -82,8 +93,31 @@ class AwsSamPlugin {
     for (const resourceKey in samConfig.Resources) {
       const resource = samConfig.Resources[resourceKey];
 
-      const buildRoot = projectPath === "" ? `.aws-sam/build` : `${projectPath}/.aws-sam/build`;
+      const buildDirectoryTarget = nestedApplicationName === null
+        ? `.aws-sam/build`
+        : `.aws-sam/build/${nestedApplicationName}`;
+      const buildRoot = projectPath === "" 
+        ? `${buildDirectoryTarget}` 
+        : `${projectPath}/${buildDirectoryTarget}`;
 
+      if (resource.Type === "AWS::Serverless::Application") {
+        const nestedPath = path.relative(projectPath ?? '.', path.dirname(resource.Properties.Location));
+        const nestedTemplate = path.relative(projectPath ?? '.', resource.Properties.Location);
+        nestedResults.push(this.entryFor(
+          resourceKey,
+          nestedPath,
+          resource.Location,
+          fs.readFileSync(nestedTemplate).toString(),
+          outFile,
+          resourceKey
+        ));
+        // Point to new template generated for nested application.
+        samConfig.Resources[resourceKey].Properties.Location = path.join('.', resourceKey, 'template.yaml');
+        applicationConfigs.push({
+          buildRoot: buildRoot,
+          samConfig: samConfig
+        });
+      }
       // Correct paths for files that can be uploaded using "aws couldformation package"
       if (resource.Type === "AWS::ApiGateway::RestApi" && typeof resource.Properties.BodyS3Location === "string") {
         samConfig.Resources[resourceKey].Properties.BodyS3Location = path.relative(
@@ -243,6 +277,7 @@ class AwsSamPlugin {
         entryPoints[entryPointName] = fileBase;
         samConfig.Resources[resourceKey].Properties.CodeUri = resourceKey;
         samConfig.Resources[resourceKey].Properties.Handler = `${outFile}.${handlerComponents[1]}`;
+        
         samConfigs.push({
           buildRoot,
           entryPointName,
@@ -254,7 +289,32 @@ class AwsSamPlugin {
       }
     }
 
-    return { entryPoints, launchConfigs, samConfigs };
+    return this.merge(
+        [{ entryPoints, launchConfigs, samConfigs, applicationConfigs }]
+          .concat(nestedResults)
+    );
+  }
+
+  private merge(results: IEntryForResult[]): IEntryForResult {
+    const entryPoints: IEntryPointMap = {};
+    const launchConfigs: any[] = [];
+    const samConfigs: SamConfig[] = [];
+    const applicationConfigs: NestedApplicationConfig[] = [];
+    for (let result of results) {
+      for (let key of Object.keys(result.entryPoints)) {
+        entryPoints[key] = result.entryPoints[key];
+      }
+      for (let launchConfig of result.launchConfigs) {
+        launchConfigs.push(launchConfig);
+      }
+      for (let samConfig of result.samConfigs) {
+        samConfigs.push(samConfig);
+      }
+      for (let nestedApplicationConfig of result.applicationConfigs) {
+        applicationConfigs.push(nestedApplicationConfig);
+      }
+    }
+    return { entryPoints, launchConfigs, samConfigs, applicationConfigs };
   }
 
   public entry() {
@@ -287,12 +347,13 @@ class AwsSamPlugin {
       }
 
       // Retrieve the entry points, VS Code debugger launch configs and SAM config for this entry
-      const { entryPoints, launchConfigs, samConfigs } = this.entryFor(
+      const { entryPoints, launchConfigs, samConfigs, applicationConfigs } = this.entryFor(
         projectKey,
         path.relative(".", path.dirname(projectTemplateName)),
         path.basename(projectTemplateName),
         fs.readFileSync(projectTemplateName).toString(),
-        outFile
+        outFile,
+        null
       );
 
       // Addd them to the entry pointsm launch configs and SAM confis we've already discovered.
@@ -302,6 +363,7 @@ class AwsSamPlugin {
       };
       this.launchConfig.configurations = [...this.launchConfig.configurations, ...launchConfigs];
       this.samConfigs = [...this.samConfigs, ...samConfigs];
+      this.applicationConfigs = [...this.applicationConfigs, ...applicationConfigs];
     }
 
     // Once we're done return the entry points
@@ -328,6 +390,17 @@ class AwsSamPlugin {
       }, {} as Record<string, any>);
       for (const buildRoot in yamlUnique) {
         const samConfig = yamlUnique[buildRoot];
+        fs.writeFileSync(`${buildRoot}/template.yaml`, yaml.dump(samConfig, { indent: 2, quotingType: '"', schema }));
+      }
+
+
+      const nestedApplicationYamlUnique = this.applicationConfigs.reduce((a, e) => {
+        const { buildRoot, samConfig } = e;
+        a[buildRoot] = samConfig;
+        return a;
+      }, {} as Record<string, any>);
+      for (const buildRoot in nestedApplicationYamlUnique) {
+        const samConfig = nestedApplicationYamlUnique[buildRoot];
         fs.writeFileSync(`${buildRoot}/template.yaml`, yaml.dump(samConfig, { indent: 2, quotingType: '"', schema }));
       }
 
