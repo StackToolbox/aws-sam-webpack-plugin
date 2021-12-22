@@ -18,7 +18,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -39,7 +39,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -60,7 +60,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -78,7 +78,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs10.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -96,7 +96,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -114,7 +114,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -131,7 +131,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
@@ -153,7 +153,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
@@ -172,7 +172,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs8.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
       "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
     );
   });
@@ -195,7 +195,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs12.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 });
@@ -218,7 +218,7 @@ Resources:
       CodeUri: src/my-lambda
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -236,7 +236,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -258,7 +258,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -275,7 +275,7 @@ Resources:
       CodeUri: src/my-lambda
       Runtime: nodejs14.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
       "MyLambda is missing a Handler"
     );
   });
@@ -299,7 +299,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -317,7 +317,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -339,7 +339,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries).toMatchSnapshot();
   });
 
@@ -356,7 +356,7 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+    expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
       "MyLambda is missing a CodeUri"
     );
   });
@@ -372,7 +372,7 @@ Resources:
   MyLambda:
     Type: AWS::Serverless::Function
 `;
-  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
     "MyLambda is missing Properties"
   );
 });
@@ -390,7 +390,7 @@ Resources:
       Handler: apphandler
       Runtime: nodejs14.x
 `;
-  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
+  expect(() => plugin.entryFor("default", "", "template.yaml", template, "app", null)).toThrowError(
     'MyLambda Handler must contain exactly one "."'
   );
 });
@@ -411,7 +411,7 @@ Resources:
 `;
   const originalLog = console.log;
   console.log = jest.fn();
-  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
   //   expect(entries).toMatchSnapshot();
   expect(console.log).toBeCalledWith(
     "WARNING: This plugin does not compile inline code. The InlineCode for 'MyLambda' will be copied 'as is'."
@@ -437,7 +437,7 @@ describe("Launch config name", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
 
     expect(entries.launchConfigs[0].name).toEqual("MyLambda");
   });
@@ -459,7 +459,7 @@ describe("Launch config name", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app", null);
 
     expect(entries.launchConfigs[0].name).toEqual("xxx:MyLambda");
   });
@@ -483,7 +483,7 @@ describe("SAM config entryPointName:", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
 
     expect(entries.samConfigs[0].entryPointName).toEqual("MyLambda");
   });
@@ -505,7 +505,7 @@ describe("SAM config entryPointName:", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "", "template.yaml", template, "app", null);
 
     expect(entries.samConfigs[0].entryPointName).toEqual("xxx#MyLambda");
   });
@@ -529,7 +529,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app", null);
 
     expect(entries).toMatchSnapshot();
   });
@@ -551,7 +551,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app", null);
     expect(entries.entryPoints["xxx#MyLambda"]).toEqual("./xxx/src/my-lambda/app");
   });
 
@@ -572,7 +572,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app", null);
     expect(entries.launchConfigs[0].localRoot).toEqual("${workspaceFolder}/xxx/.aws-sam/build/MyLambda");
   });
 
@@ -593,7 +593,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0].buildRoot).toEqual("xxx/.aws-sam/build");
   });
 
@@ -614,7 +614,7 @@ describe("When the template is in a subfolder", () => {
         CodeUri: src/my-lambda
         Handler: app.handler
   `;
-    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app");
+    const entries = plugin.entryFor("xxx", "xxx", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0].outFile).toEqual("./xxx/.aws-sam/build/MyLambda/app.js");
   });
 });
@@ -636,7 +636,7 @@ Resources:
   FakeResource:
     Type: AWS::FakeResource::NahNah
 `;
-  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
   expect(entries).toMatchSnapshot();
 });
 
@@ -657,7 +657,7 @@ Resources:
       CodeUri: src/my-lambda
       Handler: app.handler
 `;
-  const entries = plugin.entryFor("default", "", "template.yaml", template, "index");
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "index", null);
   expect(entries).toMatchSnapshot();
 });
 
@@ -681,7 +681,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         BodyS3Location: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.BodyS3Location).toEqual(
       "../../path/to/file"
     );
@@ -706,7 +706,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         Code: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Code).toEqual("../../path/to/file");
   });
 
@@ -729,7 +729,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         DefinitionS3Location: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual(
       "../../path/to/file"
     );
@@ -754,7 +754,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         RequestMappingTemplateS3Location: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(
       entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.RequestMappingTemplateS3Location
     ).toEqual("../../path/to/file");
@@ -779,7 +779,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         ResponseMappingTemplateS3Location: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(
       entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.ResponseMappingTemplateS3Location
     ).toEqual("../../path/to/file");
@@ -804,7 +804,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         DefinitionUri: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionUri).toEqual(
       "../../path/to/file"
     );
@@ -829,7 +829,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         Location: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Location).toEqual("../../path/to/file");
   });
 
@@ -852,7 +852,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         SourceBundle: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.SourceBundle).toEqual(
       "../../path/to/file"
     );
@@ -877,7 +877,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         TemplateURL: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.TemplateURL).toEqual(
       "../../path/to/file"
     );
@@ -903,7 +903,7 @@ describe("Property paths are rewritten correctly", () => {
         Command:
           ScriptLocation: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Command?.ScriptLocation).toEqual(
       "../../path/to/file"
     );
@@ -928,7 +928,7 @@ Resources:
     Properties:
       DefinitionS3Location: path/to/file
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual(
       "../../path/to/file"
     );
@@ -956,7 +956,7 @@ describe("Property paths are not re-written when they are objects", () => {
         BodyS3Location:
           Bucket: bucketname
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.BodyS3Location).toEqual({
       Bucket: "bucketname",
     });
@@ -982,7 +982,7 @@ describe("Property paths are not re-written when they are objects", () => {
         Code:
           S3Bucket: bucketname
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Code).toEqual({
       S3Bucket: "bucketname",
     });
@@ -1007,7 +1007,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         DefinitionS3Location: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual(
       "s3://path/to/file"
     );
@@ -1032,7 +1032,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         RequestMappingTemplateS3Location: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(
       entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.RequestMappingTemplateS3Location
     ).toEqual("s3://path/to/file");
@@ -1057,7 +1057,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         ResponseMappingTemplateS3Location: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(
       entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.ResponseMappingTemplateS3Location
     ).toEqual("s3://path/to/file");
@@ -1083,7 +1083,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         DefinitionUri: path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionUri).toEqual(
       "../../path/to/file"
     );
@@ -1108,7 +1108,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         Location: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Location).toEqual("s3://path/to/file");
   });
 
@@ -1132,7 +1132,7 @@ describe("Property paths are not re-written when they are objects", () => {
         SourceBundle:
           S3Bucket: bucketname
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.SourceBundle).toEqual({
       S3Bucket: "bucketname",
     });
@@ -1157,7 +1157,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         TemplateURL: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.TemplateURL).toEqual(
       "s3://path/to/file"
     );
@@ -1183,7 +1183,7 @@ describe("Property paths are not re-written when they are objects", () => {
         Command:
           ScriptLocation: s3://path/to/file
   `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.Command?.ScriptLocation).toEqual(
       "s3://path/to/file"
     );
@@ -1209,7 +1209,7 @@ Resources:
       DefinitionS3Location:
         Bucket: bucketname
 `;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
     expect(entries.samConfigs[0]?.samConfig?.Resources?.MyResource?.Properties?.DefinitionS3Location).toEqual({
       Bucket: "bucketname",
     });
@@ -1230,5 +1230,5 @@ Resources:
       Handler: app.handler
       Runtime: nodejs14.x
 `;
-  const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+  const entries = plugin.entryFor("default", "", "template.yaml", template, "app", null);
 });
