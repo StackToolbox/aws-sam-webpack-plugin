@@ -401,6 +401,9 @@ class AwsSamPlugin {
       }, {} as Record<string, any>);
       for (const buildRoot in nestedApplicationYamlUnique) {
         const samConfig = nestedApplicationYamlUnique[buildRoot];
+        if (!fs.existsSync(buildRoot)) {
+          fs.mkdirSync(buildRoot, { recursive: true });
+        }
         fs.writeFileSync(`${buildRoot}/template.yaml`, yaml.dump(samConfig, { indent: 2, quotingType: '"', schema }));
       }
 
