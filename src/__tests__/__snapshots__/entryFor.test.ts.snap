@@ -2,6 +2,7 @@
 
 exports[`Function CodeUri can be set at the function 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -54,6 +55,7 @@ Object {
 
 exports[`Function CodeUri can be set global or at the function 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -111,6 +113,7 @@ Object {
 
 exports[`Function CodeUri can be set globally 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -168,6 +171,7 @@ Object {
 
 exports[`Function Handler can be set at the function 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -220,6 +224,7 @@ Object {
 
 exports[`Function Handler can be set global and at function 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -277,6 +282,7 @@ Object {
 
 exports[`Function Handler can be set globally 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -334,6 +340,7 @@ Object {
 
 exports[`Function Runtime can be set at the function to nodejs10.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -386,6 +393,7 @@ Object {
 
 exports[`Function Runtime can be set at the function to nodejs12.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -438,6 +446,7 @@ Object {
 
 exports[`Function Runtime can be set at the function to nodejs14.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -490,6 +499,7 @@ Object {
 
 exports[`Function Runtime can be set global and at function 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -547,6 +557,7 @@ Object {
 
 exports[`Function Runtime can be set globally to nodejs10.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -603,6 +614,7 @@ Object {
 
 exports[`Function Runtime can be set globally to nodejs12.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -659,6 +671,7 @@ Object {
 
 exports[`Function Runtime can be set globally to nodejs14.x 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -715,6 +728,7 @@ Object {
 
 exports[`It ignores non AWS::Serverless::Function resosurces 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -770,6 +784,7 @@ Object {
 
 exports[`JS output files uses outFile parameter 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
   },
@@ -826,6 +841,7 @@ Object {
 
 exports[`When the template is in a subfolder it should match the happy snapshot 1`] = `
 Object {
+  "applicationConfigs": Array [],
   "entryPoints": Object {
     "xxx#MyLambda": "./xxx/src/my-lambda/app",
   },
