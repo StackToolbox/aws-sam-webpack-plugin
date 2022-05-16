@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/graphboss/aws-sam-webpack-plugin.git"
+    "url": "git+https://github.com/StackToolbox/aws-sam-webpack-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -20,12 +20,12 @@
     "typescript",
     "babel"
   ],
-  "author": "Richard Buggy <rich@graphboss.com>",
+  "author": "Richard Buggy <rich@stacktoolbox.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/graphboss/aws-sam-webpack-plugin/issues"
+    "url": "https://github.com/StackToolbox/aws-sam-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/graphboss/aws-sam-webpack-plugin#readme",
+  "homepage": "https://www.stacktoolbox.com/aws-sam-webpack-plugin",
   "dependencies": {
     "js-yaml": "^4.1.0",
     "yaml-cfn": "^0.3.1"
