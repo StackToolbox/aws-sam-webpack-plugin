@@ -1,27 +1,6 @@
 import SamPlugin from "../index";
 
 describe("Function Runtime", () => {
-  test("can be set globally to nodejs10.x", () => {
-    const plugin = new SamPlugin();
-    const template = `
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-
-Globals:
-  Function:
-    Runtime: nodejs10.x
-
-Resources:
-  MyLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/my-lambda
-      Handler: app.handler
-`;
-    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
-    expect(entries).toMatchSnapshot();
-  });
-
   test("can be set globally to nodejs12.x", () => {
     const plugin = new SamPlugin();
     const template = `
@@ -64,11 +43,15 @@ Resources:
     expect(entries).toMatchSnapshot();
   });
 
-  test("can be set at the function to nodejs10.x", () => {
+  test("can be set globally to nodejs16.x", () => {
     const plugin = new SamPlugin();
     const template = `
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
 
 Resources:
   MyLambda:
@@ -76,7 +59,6 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs10.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -118,6 +100,24 @@ Resources:
     expect(entries).toMatchSnapshot();
   });
 
+  test("can be set at the function to nodejs16.x", () => {
+    const plugin = new SamPlugin();
+    const template = `
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-lambda
+      Handler: app.handler
+      Runtime: nodejs16.x
+`;
+    const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
+    expect(entries).toMatchSnapshot();
+  });
+
   test("must be set globally or at the function", () => {
     const plugin = new SamPlugin();
     const template = `
@@ -132,7 +132,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
     );
   });
 
@@ -144,7 +144,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs8.x
+    Runtime: nodejs10.x
 
 Resources:
   MyLambda:
@@ -154,7 +154,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
     );
   });
 
@@ -170,10 +170,10 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs8.x
+      Runtime: nodejs10.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs10.x, nodejs12.x or nodejs14.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
     );
   });
 
@@ -185,7 +185,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs8.x
+    Runtime: nodejs10.x
 
 Resources:
   MyLambda:
@@ -193,7 +193,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -216,7 +216,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/my-lambda
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -234,7 +234,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -256,7 +256,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -273,7 +273,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/my-lambda
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a Handler"
@@ -297,7 +297,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -315,7 +315,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -337,7 +337,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -354,7 +354,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
       "MyLambda is missing a CodeUri"
@@ -388,7 +388,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: apphandler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
   expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
     'MyLambda Handler must contain exactly one "."'
@@ -407,7 +407,7 @@ Resources:
     Properties:
       InlineCode: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
   const originalLog = console.log;
   console.log = jest.fn();
@@ -428,7 +428,7 @@ describe("Launch config name", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -450,7 +450,7 @@ describe("Launch config name", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -474,7 +474,7 @@ describe("SAM config entryPointName:", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -496,7 +496,7 @@ describe("SAM config entryPointName:", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -520,7 +520,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -542,7 +542,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -563,7 +563,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -584,7 +584,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -605,7 +605,7 @@ describe("When the template is in a subfolder", () => {
   
   Globals:
     Function:
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
   
   Resources:
     MyLambda:
@@ -631,7 +631,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 
   FakeResource:
     Type: AWS::FakeResource::NahNah
@@ -648,7 +648,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs14.x
+    Runtime: nodejs16.x
 
 Resources:
   MyLambda:
@@ -674,7 +674,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::ApiGateway::RestApi
@@ -699,7 +699,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Lambda::Function
@@ -722,7 +722,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::GraphQLSchema
@@ -747,7 +747,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::Resolver
@@ -772,7 +772,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::Resolver
@@ -797,7 +797,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Serverless::Api
@@ -822,7 +822,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Include
@@ -845,7 +845,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::ElasticBeanstalk::ApplicationVersion
@@ -870,7 +870,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::CloudFormation::Stack
@@ -895,7 +895,7 @@ describe("Property paths are rewritten correctly", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Glue::Job
@@ -921,7 +921,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 
   MyResource:
     Type: AWS::StepFunctions::StateMachine
@@ -948,7 +948,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::ApiGateway::RestApi
@@ -974,7 +974,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Lambda::Function
@@ -1000,7 +1000,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::GraphQLSchema
@@ -1025,7 +1025,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::Resolver
@@ -1050,7 +1050,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::AppSync::Resolver
@@ -1076,7 +1076,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Serverless::Api
@@ -1101,7 +1101,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Include
@@ -1124,7 +1124,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::ElasticBeanstalk::ApplicationVersion
@@ -1150,7 +1150,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::CloudFormation::Stack
@@ -1175,7 +1175,7 @@ describe("Property paths are not re-written when they are objects", () => {
       Properties:
         CodeUri: src/my-lambda
         Handler: app.handler
-        Runtime: nodejs14.x
+        Runtime: nodejs16.x
 
     MyResource:
       Type: AWS::Glue::Job
@@ -1201,7 +1201,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 
   MyResource:
     Type: AWS::StepFunctions::StateMachine
@@ -1228,7 +1228,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs14.x
+      Runtime: nodejs16.x
 `;
   const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
 });

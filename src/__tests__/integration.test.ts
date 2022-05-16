@@ -11,7 +11,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs10.x
+    Runtime: nodejs16.x
 
 Resources:
   MyLambda:
