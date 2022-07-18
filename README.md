@@ -366,6 +366,12 @@ Once you have done this you should be able to execute Webpack from the root fold
 | **`projects`**    | `{Object}`  | `{"default":"."}` | A JavaScript object where the key is the name of the project and the value is the path to the SAM template or a folder containing a `template.yaml` or `template.yml` for the project |
 | **`vscodeDebug`** | `{Boolean}` | `true`            | Also generate a `.vscode/launch.json` file for debugging Lambda with SAM CLI local S                                                                                                  |
 
+Options can be passed on construction of the `AwsSamPlugin` object. For exmaple, the following code will result in an `outFile` of `index.js` instead of the default `app.js` (notice the lack of `.js` extension as per the above instructions):
+
+```javascript
+const awsSamPlugin = new AwsSamPlugin({outFile: "index"});
+```
+
 ### `vscodeDebug`
 
 Enable/disable automatically generating a `.vscode/launch.json` file. This file contains the VS Code debug configuration for all of the Lambdas from your `template.yaml`.
