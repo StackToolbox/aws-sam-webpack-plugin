@@ -11,7 +11,7 @@
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs12.x`, `nodejs14.x` or `nodejs16.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs14.x` or `nodejs16.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](http://www.goingserverless.com/blog/building-apps-with-sam-typescript-and-vscode-debugging).
 
 I started this project for two reasons:
 

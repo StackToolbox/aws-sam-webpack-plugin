@@ -1,7 +1,7 @@
 import SamPlugin from "../index";
 
 describe("Function Runtime", () => {
-  test("can be set globally to nodejs12.x", () => {
+  test("can be set globally to nodejs14.x", () => {
     const plugin = new SamPlugin();
     const template = `
 AWSTemplateFormatVersion: "2010-09-09"
@@ -9,7 +9,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Runtime: nodejs12.x
+    Runtime: nodejs14.x
 
 Resources:
   MyLambda:
@@ -64,7 +64,7 @@ Resources:
     expect(entries).toMatchSnapshot();
   });
 
-  test("can be set at the function to nodejs12.x", () => {
+  test("can be set at the function to nodejs14.x", () => {
     const plugin = new SamPlugin();
     const template = `
 AWSTemplateFormatVersion: "2010-09-09"
@@ -76,7 +76,7 @@ Resources:
     Properties:
       CodeUri: src/my-lambda
       Handler: app.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs14.x
 `;
     const entries = plugin.entryFor("default", "", "template.yaml", template, "app");
     expect(entries).toMatchSnapshot();
@@ -132,7 +132,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs14.x or nodejs16.x"
     );
   });
 
@@ -154,7 +154,7 @@ Resources:
       Handler: app.handler
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs14.x or nodejs16.x"
     );
   });
 
@@ -173,7 +173,7 @@ Resources:
       Runtime: nodejs10.x
 `;
     expect(() => plugin.entryFor("default", "", "template.yaml", template, "app")).toThrowError(
-      "MyLambda has an unsupport Runtime. Must be nodejs12.x, nodejs14.x or nodejs16.x"
+      "MyLambda has an unsupport Runtime. Must be nodejs14.x or nodejs16.x"
     );
   });
 

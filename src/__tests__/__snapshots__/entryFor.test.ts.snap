@@ -332,7 +332,7 @@ Object {
 }
 `;
 
-exports[`Function Runtime can be set at the function to nodejs12.x 1`] = `
+exports[`Function Runtime can be set at the function to nodejs14.x 1`] = `
 Object {
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
@@ -371,7 +371,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs12.x",
+              "Runtime": "nodejs14.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -597,7 +597,7 @@ Object {
 }
 `;
 
-exports[`Function Runtime can be set globally to nodejs12.x 1`] = `
+exports[`Function Runtime can be set globally to nodejs14.x 1`] = `
 Object {
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
@@ -633,7 +633,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs12.x",
+            "Runtime": "nodejs14.x",
           },
         },
         "Resources": Object {
