@@ -10,7 +10,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -32,7 +32,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -78,7 +78,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -124,7 +124,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -170,7 +170,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -260,7 +260,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -272,7 +272,7 @@ Resources:
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -338,7 +338,7 @@ Object {
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -350,7 +350,7 @@ Resources:
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs16.x
+    Runtime: nodejs18.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
