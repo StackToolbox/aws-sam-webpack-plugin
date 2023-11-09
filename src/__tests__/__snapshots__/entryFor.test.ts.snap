@@ -39,7 +39,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -96,7 +96,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -153,7 +153,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -205,7 +205,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -262,7 +262,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -319,7 +319,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -332,7 +332,7 @@ Object {
 }
 `;
 
-exports[`Function Runtime can be set at the function to nodejs12.x 1`] = `
+exports[`Function Runtime can be set at the function to nodejs14.x 1`] = `
 Object {
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
@@ -371,7 +371,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs12.x",
+              "Runtime": "nodejs14.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -540,6 +540,58 @@ Object {
 }
 `;
 
+exports[`Function Runtime can be set at the function to nodejs20.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs20.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`Function Runtime can be set global and at function 1`] = `
 Object {
   "entryPoints": Object {
@@ -576,7 +628,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs16.x",
+            "Runtime": "nodejs18.x",
           },
         },
         "Resources": Object {
@@ -584,7 +636,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -597,7 +649,7 @@ Object {
 }
 `;
 
-exports[`Function Runtime can be set globally to nodejs12.x 1`] = `
+exports[`Function Runtime can be set globally to nodejs14.x 1`] = `
 Object {
   "entryPoints": Object {
     "MyLambda": "./src/my-lambda/app",
@@ -633,7 +685,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs12.x",
+            "Runtime": "nodejs14.x",
           },
         },
         "Resources": Object {
@@ -821,6 +873,62 @@ Object {
 }
 `;
 
+exports[`Function Runtime can be set globally to nodejs20.x 1`] = `
+Object {
+  "entryPoints": Object {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": Array [
+    Object {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": Array [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": Array [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": Array [
+    Object {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": Object {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": Object {
+          "Function": Object {
+            "Runtime": "nodejs20.x",
+          },
+        },
+        "Resources": Object {
+          "MyLambda": Object {
+            "Properties": Object {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`It ignores non AWS::Serverless::Function resosurces 1`] = `
 Object {
   "entryPoints": Object {
@@ -863,7 +971,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -912,7 +1020,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs18.x",
+            "Runtime": "nodejs20.x",
           },
         },
         "Resources": Object {
@@ -968,7 +1076,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs18.x",
+            "Runtime": "nodejs20.x",
           },
         },
         "Resources": Object {
@@ -1024,7 +1132,7 @@ Object {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": Object {
           "Function": Object {
-            "Runtime": "nodejs16.x",
+            "Runtime": "nodejs18.x",
           },
         },
         "Resources": Object {
@@ -1032,7 +1140,7 @@ Object {
             "Properties": Object {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs20.x",
             },
             "Type": "AWS::Serverless::Function",
           },
