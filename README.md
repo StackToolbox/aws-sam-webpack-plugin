@@ -168,11 +168,12 @@ Create a `src` folder with one sub-folder for each function. Place your handler 
 Create a `template.yaml` in the project root. For the `CodeUri` use the functions folder (i.e. `src/{folder}`). Example:
 
 ```yaml
-MyFunction:
-  Type: AWS::Serverless::Function
-  Properties:
-    CodeUri: src/my-function
-    Handler: app.handler
+Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/my-function
+      Handler: app.handler
 ```
 
 <h2 align="center">Usage with Babel</h2>
