@@ -9,6 +9,12 @@
   <p>A Webpack plugin that replaces the <code>sam build</code> step for <a href="https://github.com/awslabs/aws-sam-cli">AWS SAM CLI</a> projects.</p>
 </div>
 
+<h2 align="center">IMPORTANT</h2>
+
+This project was created before AWS SAM CLI introduced support for building TypeScript projects. Now that AWS SAM CLI includes that support it is no longer required and will be put into maintenance mode. During this time it will be updated to support newer nodejs Lambda runtime versions and bug fixes but no new features will be added. This is to provide time for developers to migrate projects to the offical TypeScript support.
+
+If you are starting a new project it is strongly recommend you follow the instructions in [Building TypeScript projects with AWS SAM CLI](https://aws.amazon.com/blogs/compute/building-typescript-projects-with-aws-sam-cli/) and use the built-in support.
+
 <h2 align="center">Background</h2>
 
 This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs14.x`, `nodejs16.x`, `nodejs18.x` or `nodejs20.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](https://www.richdevelops.dev/building-apps-with-sam-typescript-and-vs-code-debugging).
