@@ -337,7 +337,35 @@ class AwsSamPlugin {
         if (!fs.existsSync(".vscode")) {
           fs.mkdirSync(".vscode");
         }
-        fs.writeFileSync(".vscode/launch.json", JSON.stringify(this.launchConfig, null, 2));
+
+        const launchPath = ".vscode/launch.json";
+
+        const launchContent = JSON.stringify(this.launchConfig, null, 2)
+          .replace(/^(.*"configurations": \[\s*)$/m, "$1\n    // BEGIN AwsSamPlugin")
+          .replace(/(\n  \s*\][\r\n]+\})$/m, "\n    // END AwsSamPlugin$1");
+        const regexBlock = /\s+\/\/ BEGIN AwsSamPlugin(\r|\n|.)+\/\/ END AwsSamPlugin/m;
+
+        // get new "configurations" content
+        const matches = launchContent.match(regexBlock);
+        if (!matches) {
+          throw new Error(launchPath + " new content does not match");
+        }
+        const launchConfigurations = matches[0];
+
+        if (fs.existsSync(launchPath)) {
+          const launchContentOld = fs.readFileSync(launchPath).toString("utf8");
+          if (launchContentOld.match(regexBlock)) {
+            // partial rewrite contents
+            const newContent = launchContentOld.replace(regexBlock, () => launchConfigurations);
+            fs.writeFileSync(launchPath, newContent);
+          } else {
+            // add configurations
+            const newContent = launchContentOld.replace(/(\n  \]\n\})$/m, (p0, p1) => `,${launchConfigurations}${p1}`);
+            fs.writeFileSync(launchPath, newContent);
+          }
+        } else {
+          fs.writeFileSync(launchPath, launchContent);
+        }
       }
     });
   }
