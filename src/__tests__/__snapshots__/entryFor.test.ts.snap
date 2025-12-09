@@ -39,7 +39,7 @@ exports[`Function CodeUri can be set at the function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -96,7 +96,7 @@ exports[`Function CodeUri can be set global or at the function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -153,7 +153,7 @@ exports[`Function CodeUri can be set globally 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -205,7 +205,7 @@ exports[`Function Handler can be set at the function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -262,7 +262,7 @@ exports[`Function Handler can be set global and at function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -319,59 +319,7 @@ exports[`Function Handler can be set globally 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
-            },
-            "Type": "AWS::Serverless::Function",
-          },
-        },
-        "Transform": "AWS::Serverless-2016-10-31",
-      },
-      "templateName": "template.yaml",
-    },
-  ],
-}
-`;
-
-exports[`Function Runtime can be set at the function to nodejs18.x 1`] = `
-{
-  "entryPoints": {
-    "MyLambda": "./src/my-lambda/app",
-  },
-  "launchConfigs": [
-    {
-      "address": "localhost",
-      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
-      "name": "MyLambda",
-      "outFiles": [
-        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
-      ],
-      "port": 5858,
-      "protocol": "inspector",
-      "remoteRoot": "/var/task",
-      "request": "attach",
-      "skipFiles": [
-        "/var/runtime/**/*.js",
-        "<node_internals>/**/*.js",
-      ],
-      "sourceMaps": true,
-      "stopOnEntry": false,
-      "type": "node",
-    },
-  ],
-  "samConfigs": [
-    {
-      "buildRoot": ".aws-sam/build",
-      "entryPointName": "MyLambda",
-      "outFile": "./.aws-sam/build/MyLambda/app.js",
-      "projectKey": "default",
-      "samConfig": {
-        "AWSTemplateFormatVersion": "2010-09-09",
-        "Resources": {
-          "MyLambda": {
-            "Properties": {
-              "CodeUri": "MyLambda",
-              "Handler": "app.handler",
-              "Runtime": "nodejs18.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -488,6 +436,58 @@ exports[`Function Runtime can be set at the function to nodejs22.x 1`] = `
 }
 `;
 
+exports[`Function Runtime can be set at the function to nodejs24.x 1`] = `
+{
+  "entryPoints": {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": [
+    {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": [
+    {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Resources": {
+          "MyLambda": {
+            "Properties": {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+              "Runtime": "nodejs24.x",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`Function Runtime can be set global and at function 1`] = `
 {
   "entryPoints": {
@@ -524,7 +524,7 @@ exports[`Function Runtime can be set global and at function 1`] = `
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": {
           "Function": {
-            "Runtime": "nodejs20.x",
+            "Runtime": "nodejs22.x",
           },
         },
         "Resources": {
@@ -532,63 +532,7 @@ exports[`Function Runtime can be set global and at function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
-            },
-            "Type": "AWS::Serverless::Function",
-          },
-        },
-        "Transform": "AWS::Serverless-2016-10-31",
-      },
-      "templateName": "template.yaml",
-    },
-  ],
-}
-`;
-
-exports[`Function Runtime can be set globally to nodejs18.x 1`] = `
-{
-  "entryPoints": {
-    "MyLambda": "./src/my-lambda/app",
-  },
-  "launchConfigs": [
-    {
-      "address": "localhost",
-      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
-      "name": "MyLambda",
-      "outFiles": [
-        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
-      ],
-      "port": 5858,
-      "protocol": "inspector",
-      "remoteRoot": "/var/task",
-      "request": "attach",
-      "skipFiles": [
-        "/var/runtime/**/*.js",
-        "<node_internals>/**/*.js",
-      ],
-      "sourceMaps": true,
-      "stopOnEntry": false,
-      "type": "node",
-    },
-  ],
-  "samConfigs": [
-    {
-      "buildRoot": ".aws-sam/build",
-      "entryPointName": "MyLambda",
-      "outFile": "./.aws-sam/build/MyLambda/app.js",
-      "projectKey": "default",
-      "samConfig": {
-        "AWSTemplateFormatVersion": "2010-09-09",
-        "Globals": {
-          "Function": {
-            "Runtime": "nodejs18.x",
-          },
-        },
-        "Resources": {
-          "MyLambda": {
-            "Properties": {
-              "CodeUri": "MyLambda",
-              "Handler": "app.handler",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -713,6 +657,62 @@ exports[`Function Runtime can be set globally to nodejs22.x 1`] = `
 }
 `;
 
+exports[`Function Runtime can be set globally to nodejs24.x 1`] = `
+{
+  "entryPoints": {
+    "MyLambda": "./src/my-lambda/app",
+  },
+  "launchConfigs": [
+    {
+      "address": "localhost",
+      "localRoot": "\${workspaceFolder}/.aws-sam/build/MyLambda",
+      "name": "MyLambda",
+      "outFiles": [
+        "\${workspaceFolder}/.aws-sam/build/MyLambda/**/*.js",
+      ],
+      "port": 5858,
+      "protocol": "inspector",
+      "remoteRoot": "/var/task",
+      "request": "attach",
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js",
+      ],
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "type": "node",
+    },
+  ],
+  "samConfigs": [
+    {
+      "buildRoot": ".aws-sam/build",
+      "entryPointName": "MyLambda",
+      "outFile": "./.aws-sam/build/MyLambda/app.js",
+      "projectKey": "default",
+      "samConfig": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Globals": {
+          "Function": {
+            "Runtime": "nodejs24.x",
+          },
+        },
+        "Resources": {
+          "MyLambda": {
+            "Properties": {
+              "CodeUri": "MyLambda",
+              "Handler": "app.handler",
+            },
+            "Type": "AWS::Serverless::Function",
+          },
+        },
+        "Transform": "AWS::Serverless-2016-10-31",
+      },
+      "templateName": "template.yaml",
+    },
+  ],
+}
+`;
+
 exports[`It ignores non AWS::Serverless::Function resosurces 1`] = `
 {
   "entryPoints": {
@@ -755,7 +755,7 @@ exports[`It ignores non AWS::Serverless::Function resosurces 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },
@@ -804,7 +804,7 @@ exports[`JS output files uses outFile parameter 1`] = `
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": {
           "Function": {
-            "Runtime": "nodejs22.x",
+            "Runtime": "nodejs24.x",
           },
         },
         "Resources": {
@@ -860,7 +860,7 @@ exports[`When the template is in a subfolder it should match the happy snapshot 
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": {
           "Function": {
-            "Runtime": "nodejs22.x",
+            "Runtime": "nodejs24.x",
           },
         },
         "Resources": {
@@ -916,7 +916,7 @@ exports[`can be set global and at function 1`] = `
         "AWSTemplateFormatVersion": "2010-09-09",
         "Globals": {
           "Function": {
-            "Runtime": "nodejs20.x",
+            "Runtime": "nodejs22.x",
           },
         },
         "Resources": {
@@ -924,7 +924,7 @@ exports[`can be set global and at function 1`] = `
             "Properties": {
               "CodeUri": "MyLambda",
               "Handler": "app.handler",
-              "Runtime": "nodejs22.x",
+              "Runtime": "nodejs24.x",
             },
             "Type": "AWS::Serverless::Function",
           },

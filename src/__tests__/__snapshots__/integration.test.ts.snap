@@ -10,7 +10,7 @@ exports[`Happy path with VS Code debugging disabled 1`] = `
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -32,7 +32,7 @@ exports[`Happy path with an output file specified 1`] = `
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -78,7 +78,7 @@ exports[`Happy path with default constructor works 1`] = `
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -124,7 +124,7 @@ exports[`Happy path with empty options in the constructor works 1`] = `
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -170,7 +170,7 @@ exports[`Happy path with empty options in the constructor works and an existing 
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -260,7 +260,7 @@ exports[`Happy path with multiple projects and different template names works 1`
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -272,7 +272,7 @@ Resources:
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -338,7 +338,7 @@ exports[`Happy path with multiple projects works 1`] = `
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function
@@ -350,7 +350,7 @@ Resources:
 Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
-    Runtime: nodejs22.x
+    Runtime: nodejs24.x
 Resources:
   MyLambda:
     Type: AWS::Serverless::Function

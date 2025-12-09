@@ -17,7 +17,7 @@ I will no longer be providing updates to this package but if someone wants to cr
 
 <h2 align="center">Background</h2>
 
-This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs18.x`, `nodejs20.x` or `nodejs22.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](https://www.richdevelops.dev/building-apps-with-sam-typescript-and-vs-code-debugging).
+This plugin will build your [AWS SAM CLI](https://github.com/awslabs/aws-sam-cli) project using Webpack. You can use it to replace the `sam build` step if every function in your SAM template uses the `nodejs20.x`, `nodejs22.x` or `nodejs24.x` runtime. If your project uses other runtimes then look at [Building Apps with SAM, TypeScript and VS Code Debugging](https://www.richdevelops.dev/building-apps-with-sam-typescript-and-vs-code-debugging).
 
 I started this project for two reasons:
 
